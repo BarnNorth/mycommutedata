@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle, Car, Calendar } from "lucide-react";
+import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from "lucide-react";
+import googleMapsScreenshot from "@/assets/google-maps-range.webp";
 
 export default function Landing() {
   return (
@@ -73,24 +74,11 @@ export default function Landing() {
                 </div>
               </div>
               <div className="p-6">
-                {/* Mockup of Google Maps interface */}
-                <div className="bg-background rounded-lg border border-border/50 p-4 mb-4">
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
-                    <Clock className="w-4 h-4" />
-                    <span>Depart at 8:00 AM</span>
-                    <span className="mx-2">•</span>
-                    <Calendar className="w-4 h-4" />
-                    <span>Mon, Jan 12</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
-                    <div>
-                      <p className="font-medium text-foreground mb-1">via I-5 S</p>
-                      <p className="text-destructive font-semibold">typically 30 min to 1 hr</p>
-                      <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src={googleMapsScreenshot} 
+                  alt="Google Maps showing time range estimate" 
+                  className="w-full rounded-lg border border-border/50 mb-4"
+                />
                 <div className="text-center">
                   <p className="text-lg font-semibold text-destructive mb-1">"typically 30 min to 1 hr"</p>
                   <p className="text-sm text-muted-foreground">A 30-minute range doesn't help you plan</p>
