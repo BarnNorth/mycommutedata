@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { AddressAutocomplete } from '@/components/ui/address-autocomplete';
 import { Clock, Plus, X } from 'lucide-react';
 import { z } from 'zod';
 
@@ -139,12 +140,12 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
       {/* Origin Address */}
       <div className="space-y-2">
         <Label htmlFor="origin">Origin Address</Label>
-        <Input
+        <AddressAutocomplete
           id="origin"
           placeholder="e.g., 123 Main St, San Francisco, CA"
           value={formData.origin_address}
-          onChange={(e) => setFormData({ ...formData, origin_address: e.target.value })}
-          className={errors.origin_address ? 'border-destructive' : ''}
+          onChange={(value) => setFormData({ ...formData, origin_address: value })}
+          error={!!errors.origin_address}
         />
         {errors.origin_address && <p className="text-sm text-destructive">{errors.origin_address}</p>}
       </div>
@@ -152,12 +153,12 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
       {/* Destination Address */}
       <div className="space-y-2">
         <Label htmlFor="destination">Destination Address</Label>
-        <Input
+        <AddressAutocomplete
           id="destination"
           placeholder="e.g., 456 Market St, San Francisco, CA"
           value={formData.destination_address}
-          onChange={(e) => setFormData({ ...formData, destination_address: e.target.value })}
-          className={errors.destination_address ? 'border-destructive' : ''}
+          onChange={(value) => setFormData({ ...formData, destination_address: value })}
+          error={!!errors.destination_address}
         />
         {errors.destination_address && <p className="text-sm text-destructive">{errors.destination_address}</p>}
       </div>
