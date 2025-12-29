@@ -60,6 +60,16 @@ Deno.serve(async (req) => {
 
     console.log(`[check-commutes] Found ${routes.length} active routes`);
 
+    // Get the project-level Google Maps API key
+    const googleMapsApiKey = Deno.env.get("GOOGLE_MAPS_API_KEY");
+    if (!googleMapsApiKey) {
+      console.error("[check-commutes] GOOGLE_MAPS_API_KEY not configured");
+      return new Response(
+        JSON.stringify({ error: "Google Maps API key not configured" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     let checkedCount = 0;
     const results: { routeId: string; success: boolean; message: string }[] = [];
 
@@ -70,21 +80,18 @@ Deno.serve(async (req) => {
         continue;
       }
 
-      // Get user's settings for API key and timezone
-      const { data: settings, error: settingsError } = await supabase
+      // Get user's settings for timezone
+      const { data: settings } = await supabase
         .from("user_settings")
-        .select("google_maps_api_key, timezone")
+        .select("timezone")
         .eq("user_id", route.user_id)
-        .single();
+        .maybeSingle();
 
-      if (settingsError || !settings?.google_maps_api_key) {
-        console.log(`[check-commutes] Route ${route.id} - skipping, no API key configured`);
-        results.push({ routeId: route.id, success: false, message: "No API key" });
-        continue;
+      const timezone = settings?.timezone || "America/Los_Angeles";
+
+      if (!settings) {
+        console.log(`[check-commutes] Route ${route.id} - no user settings, using default timezone`);
       }
-
-      const userSettings = settings as UserSettings;
-      const timezone = userSettings.timezone || "America/Los_Angeles";
 
       // Get current time in user's timezone
       const userNow = new Date(now.toLocaleString("en-US", { timeZone: timezone }));
@@ -126,12 +133,11 @@ Deno.serve(async (req) => {
 
       // Call Google Maps Directions API
       try {
-        const apiKey = userSettings.google_maps_api_key;
         const origin = encodeURIComponent(route.origin_address);
         const destination = encodeURIComponent(route.destination_address);
         const departureTime = Math.floor(Date.now() / 1000); // Current timestamp
 
-        const mapsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&departure_time=${departureTime}&key=${apiKey}`;
+        const mapsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&departure_time=${departureTime}&key=${googleMapsApiKey}`;
 
         const mapsResponse = await fetch(mapsUrl);
         const mapsData = await mapsResponse.json();
