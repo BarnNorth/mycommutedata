@@ -100,8 +100,8 @@ export default function Landing() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <p className="text-lg font-semibold text-destructive mb-1">"typically 30 min to 1 hr"</p>
-                  <p className="text-sm text-muted-foreground">A 30-minute range doesn't help you plan</p>
+                  <p className="text-lg font-semibold text-destructive mb-1">"typically" does not help</p>
+                  <p className="text-sm text-muted-foreground">A range doesn't help you plan or make decisions</p>
                 </div>
               </div>
             </div>
