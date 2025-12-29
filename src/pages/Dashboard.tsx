@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { Plus, MapPin, Clock, ArrowRight, Pencil, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
 
 interface Route {
   id: string;
@@ -41,6 +44,15 @@ export default function Dashboard() {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [recentLogs, setRecentLogs] = useState<CommuteLog[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Edit dialog state
+  const [editingRoute, setEditingRoute] = useState<Route | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  // Delete dialog state
+  const [deletingRoute, setDeletingRoute] = useState<Route | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -107,6 +119,99 @@ export default function Dashboard() {
     }
   };
 
+  const handleEditRoute = async (data: RouteFormData) => {
+    if (!editingRoute) return;
+    
+    try {
+      const { error } = await supabase
+        .from('routes')
+        .update({
+          name: data.name,
+          origin_address: data.origin_address,
+          destination_address: data.destination_address,
+          check_time: data.check_time,
+          check_days: data.check_days,
+        })
+        .eq('id', editingRoute.id);
+
+      if (error) throw error;
+
+      setRoutes(routes.map(r => 
+        r.id === editingRoute.id 
+          ? { ...r, ...data } 
+          : r
+      ));
+      
+      setIsEditDialogOpen(false);
+      setEditingRoute(null);
+      
+      toast({
+        title: 'Route updated',
+        description: 'Your route has been updated successfully.',
+      });
+    } catch (error) {
+      console.error('Error updating route:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update route. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleDeleteRoute = async () => {
+    if (!deletingRoute) return;
+    
+    setIsDeleting(true);
+    try {
+      // First delete associated commute logs
+      const { error: logsError } = await supabase
+        .from('commute_logs')
+        .delete()
+        .eq('route_id', deletingRoute.id);
+
+      if (logsError) throw logsError;
+
+      // Then delete the route
+      const { error } = await supabase
+        .from('routes')
+        .delete()
+        .eq('id', deletingRoute.id);
+
+      if (error) throw error;
+
+      setRoutes(routes.filter(r => r.id !== deletingRoute.id));
+      setRecentLogs(recentLogs.filter(l => l.route?.name !== deletingRoute.name));
+      
+      setIsDeleteDialogOpen(false);
+      setDeletingRoute(null);
+      
+      toast({
+        title: 'Route deleted',
+        description: 'The route and its history have been deleted.',
+      });
+    } catch (error) {
+      console.error('Error deleting route:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete route. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const openEditDialog = (route: Route) => {
+    setEditingRoute(route);
+    setIsEditDialogOpen(true);
+  };
+
+  const openDeleteDialog = (route: Route) => {
+    setDeletingRoute(route);
+    setIsDeleteDialogOpen(true);
+  };
+
   const formatTime = (time: string) => {
     const [hours, minutes] = time.split(':');
     const date = new Date();
@@ -166,10 +271,28 @@ export default function Dashboard() {
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-lg">{route.name}</CardTitle>
-                      <Switch
-                        checked={route.is_active}
-                        onCheckedChange={(checked) => toggleRoute(route.id, checked)}
-                      />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => openEditDialog(route)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
+                          onClick={() => openDeleteDialog(route)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                        <Switch
+                          checked={route.is_active}
+                          onCheckedChange={(checked) => toggleRoute(route.id, checked)}
+                        />
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -236,6 +359,55 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      {/* Edit Route Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Edit Route</DialogTitle>
+            <DialogDescription>
+              Update your route details.
+            </DialogDescription>
+          </DialogHeader>
+          {editingRoute && (
+            <RouteForm
+              initialData={{
+                name: editingRoute.name,
+                origin_address: editingRoute.origin_address,
+                destination_address: editingRoute.destination_address,
+                check_time: editingRoute.check_time,
+                check_days: editingRoute.check_days,
+              }}
+              onSubmit={handleEditRoute}
+              onCancel={() => setIsEditDialogOpen(false)}
+              submitLabel="Save Changes"
+              loadingLabel="Saving..."
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Route Confirmation */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Route</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{deletingRoute?.name}"? This will also delete all commute history for this route. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteRoute}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 }
