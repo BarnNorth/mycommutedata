@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, MapPin, Clock, ArrowRight, AlertCircle } from 'lucide-react';
+import { Plus, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Route {
@@ -41,7 +41,6 @@ export default function Dashboard() {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [recentLogs, setRecentLogs] = useState<CommuteLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasApiKey, setHasApiKey] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -51,15 +50,6 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-      // Check for API key
-      const { data: settings } = await supabase
-        .from('user_settings')
-        .select('google_maps_api_key')
-        .eq('user_id', user?.id)
-        .maybeSingle();
-      
-      setHasApiKey(!!settings?.google_maps_api_key);
-
       // Fetch routes
       const { data: routesData, error: routesError } = await supabase
         .from('routes')
@@ -144,24 +134,6 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* API Key Warning */}
-        {!hasApiKey && (
-          <Card className="border-warning/50 bg-warning/5">
-            <CardContent className="flex items-center gap-4 py-4">
-              <AlertCircle className="w-5 h-5 text-warning flex-shrink-0" />
-              <div className="flex-1">
-                <p className="font-medium">Google Maps API Key Required</p>
-                <p className="text-sm text-muted-foreground">
-                  Add your API key in settings to start tracking commutes.
-                </p>
-              </div>
-              <Link to="/settings">
-                <Button variant="outline" size="sm">Go to Settings</Button>
-              </Link>
-            </CardContent>
-          </Card>
-        )}
-
         {/* Routes Section */}
         <div>
           <div className="flex items-center justify-between mb-4">
