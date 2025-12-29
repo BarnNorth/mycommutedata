@@ -20,7 +20,7 @@ interface Route {
   name: string;
   origin_address: string;
   destination_address: string;
-  check_time: string;
+  check_time: string[];
   check_days: number[];
   is_active: boolean;
 }
@@ -129,7 +129,7 @@ export default function Dashboard() {
           name: data.name,
           origin_address: data.origin_address,
           destination_address: data.destination_address,
-          check_time: data.check_time,
+          check_time: data.check_times,
           check_days: data.check_days,
         })
         .eq('id', editingRoute.id);
@@ -219,6 +219,13 @@ export default function Dashboard() {
     return format(date, 'h:mm a');
   };
 
+  const formatTimes = (times: string[]) => {
+    if (times.length <= 2) {
+      return times.map(formatTime).join(', ');
+    }
+    return `${formatTime(times[0])} +${times.length - 1} more`;
+  };
+
   const getDaysLabel = (days: number[]) => {
     if (days.length === 7) return 'Every day';
     if (JSON.stringify(days.sort()) === JSON.stringify([1, 2, 3, 4, 5])) return 'Weekdays';
@@ -306,7 +313,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Clock className="w-4 h-4 text-muted-foreground" />
-                      <span>{formatTime(route.check_time)}</span>
+                      <span>{formatTimes(route.check_time)}</span>
                       <span className="text-muted-foreground">•</span>
                       <span className="text-muted-foreground">{getDaysLabel(route.check_days)}</span>
                     </div>
@@ -375,7 +382,7 @@ export default function Dashboard() {
                 name: editingRoute.name,
                 origin_address: editingRoute.origin_address,
                 destination_address: editingRoute.destination_address,
-                check_time: editingRoute.check_time,
+                check_times: editingRoute.check_time,
                 check_days: editingRoute.check_days,
               }}
               onSubmit={handleEditRoute}
