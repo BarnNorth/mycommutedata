@@ -1,1 +1,4 @@
 project_id = "pyironepbibpexuptzst"
+
+[functions.check-commutes]
+verify_jwt = false
