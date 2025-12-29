@@ -63,7 +63,7 @@ export default function Landing() {
             <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
               <div className="flex items-center gap-2 mb-4">
                 <AlertCircle className="w-5 h-5 text-destructive" />
-                <h3 className="font-semibold text-destructive">The Problem with Google Maps</h3>
+                <h3 className="font-semibold text-destructive">The problem with other map tools</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Shows vague ranges like "typically 30 min to 1 hr"</li>
@@ -75,7 +75,7 @@ export default function Landing() {
             <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="w-5 h-5 text-primary" />
-                <h3 className="font-semibold text-primary">The MyCommuteData Solution</h3>
+                <h3 className="font-semibold text-primary">The MyCommuteData solution</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Records exact times: "37 minutes"</li>
