@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from 'lucide-react';
-
 export default function Landing() {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -30,8 +28,7 @@ export default function Landing() {
         <div className="absolute inset-0 gradient-hero opacity-5" />
         <div className="container mx-auto px-4 py-24 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Get <span className="text-primary">Exact</span> Commute Times, Not Ranges
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Get exact commute times, not ranges<span className="text-primary">exact</span> Commute Times, Not Ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute 
@@ -93,21 +90,9 @@ export default function Landing() {
             How It Works
           </h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <FeatureCard
-              icon={<MapPin className="w-6 h-6" />}
-              title="Add Your Routes"
-              description="Enter your home and work addresses. Set the exact time you leave each day."
-            />
-            <FeatureCard
-              icon={<Clock className="w-6 h-6" />}
-              title="We Record Daily"
-              description="Every day at your scheduled time, we capture the exact traffic duration—not a range."
-            />
-            <FeatureCard
-              icon={<TrendingUp className="w-6 h-6" />}
-              title="See Real Patterns"
-              description="View your commute history to find the fastest days and times based on real data."
-            />
+            <FeatureCard icon={<MapPin className="w-6 h-6" />} title="Add Your Routes" description="Enter your home and work addresses. Set the exact time you leave each day." />
+            <FeatureCard icon={<Clock className="w-6 h-6" />} title="We Record Daily" description="Every day at your scheduled time, we capture the exact traffic duration—not a range." />
+            <FeatureCard icon={<TrendingUp className="w-6 h-6" />} title="See Real Patterns" description="View your commute history to find the fastest days and times based on real data." />
           </div>
         </div>
       </section>
@@ -135,18 +120,22 @@ export default function Landing() {
           <p>© {new Date().getFullYear()} MyCommuteData. All rights reserved.</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 }
-
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className="p-6 rounded-xl bg-card shadow-card border border-border/50 animate-slide-up">
+function FeatureCard({
+  icon,
+  title,
+  description
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return <div className="p-6 rounded-xl bg-card shadow-card border border-border/50 animate-slide-up">
       <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4">
         {icon}
       </div>
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
       <p className="text-muted-foreground text-sm">{description}</p>
-    </div>
-  );
+    </div>;
 }
