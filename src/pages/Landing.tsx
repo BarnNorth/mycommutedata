@@ -74,7 +74,7 @@ export default function Landing() {
               </div>
               <div className="p-6">
                 {/* Mockup of Google Maps interface */}
-                <div className="bg-background rounded-lg border border-border/50 p-4 mb-4 h-[200px]">
+                <div className="bg-background rounded-lg border border-border/50 p-4 mb-4 h-[220px]">
                   <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
                     <Clock className="w-4 h-4" />
                     <span>Depart at 8:00 AM</span>
@@ -115,7 +115,7 @@ export default function Landing() {
                 </div>
               </div>
               <div className="p-6">
-                <div className="bg-muted/50 rounded-lg border border-border/50 p-4 mb-4 h-[200px]">
+                <div className="bg-muted/50 rounded-lg border border-border/50 p-4 mb-4 h-[220px]">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center py-2 border-b border-border/30">
                       <span className="text-sm text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
