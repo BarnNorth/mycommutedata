@@ -36,8 +36,8 @@ export default function Landing() {
               Get <span className="text-primary">exact</span> commute times, not ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute times
-              automatically, so you know exactly how long your drive really takes.
+              Other map tools show ranges when forecasting future drive times like "30-45 minutes". We record your{" "}
+              <strong>actual</strong> commute times automatically, so you know exactly how long your drive really takes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth?mode=signup">
@@ -66,7 +66,7 @@ export default function Landing() {
                 <h3 className="font-semibold text-destructive">The Problem with Google Maps</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Shows vague ranges like "30-60 min"</li>
+                <li>• Shows vague ranges like "30-45 min"</li>
                 <li>• Can't check traffic at specific future times</li>
                 <li>• No way to track patterns over weeks or months</li>
                 <li>• Hard to plan around inconsistent estimates</li>
@@ -78,7 +78,7 @@ export default function Landing() {
                 <h3 className="font-semibold text-primary">The MyCommuteData Solution</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Records exact times: "37 minutes" not "30-60"</li>
+                <li>• Records exact times: "37 minutes" not "30-45"</li>
                 <li>• Checks at your scheduled commute time daily</li>
                 <li>• Builds a history to see real patterns</li>
                 <li>• Know your actual commute, not a guess</li>
