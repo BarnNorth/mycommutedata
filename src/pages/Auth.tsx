@@ -65,19 +65,25 @@ export default function Auth() {
       if (isSignUp) {
         const { error } = await signUp(email, password);
         if (error) {
-          if (error.message.includes('already registered')) {
-            toast({
-              title: 'Account exists',
-              description: 'This email is already registered. Please log in instead.',
-              variant: 'destructive',
-            });
-          } else {
-            toast({
-              title: 'Sign up failed',
-              description: error.message,
-              variant: 'destructive',
-            });
+          // Map errors to safe, user-friendly messages
+          const errorMsg = error.message.toLowerCase();
+          let userMessage = 'Unable to create account. Please try again.';
+          
+          if (errorMsg.includes('already registered')) {
+            userMessage = 'This email is already registered. Please log in instead.';
+          } else if (errorMsg.includes('invalid email')) {
+            userMessage = 'Please enter a valid email address.';
+          } else if (errorMsg.includes('password')) {
+            userMessage = 'Please choose a stronger password.';
+          } else if (errorMsg.includes('rate limit')) {
+            userMessage = 'Too many attempts. Please try again later.';
           }
+          
+          toast({
+            title: 'Sign up failed',
+            description: userMessage,
+            variant: 'destructive',
+          });
         } else {
           toast({
             title: 'Welcome!',
