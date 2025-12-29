@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from "lucide-react";
+import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle, Car, Calendar } from "lucide-react";
 
 export default function Landing() {
   return (
@@ -56,33 +56,82 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Problem/Solution */}
+      {/* Visual Comparison */}
       <section className="py-16 border-y border-border/50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
-              <div className="flex items-center gap-2 mb-4">
-                <AlertCircle className="w-5 h-5 text-destructive" />
-                <h3 className="font-semibold text-destructive">The problem with other map tools</h3>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">See the Difference</h2>
+          <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+            Other map tools give you vague ranges. We give you real data.
+          </p>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Google Maps Side */}
+            <div className="rounded-xl overflow-hidden border border-destructive/30 bg-card shadow-lg">
+              <div className="bg-destructive/10 px-4 py-3 border-b border-destructive/20">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-destructive" />
+                  <span className="font-medium text-destructive text-sm">Other Map Tools</span>
+                </div>
               </div>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Shows vague ranges like "typically 30 min to 1 hr"</li>
-                <li>• Can't check traffic at specific future times</li>
-                <li>• No way to track patterns over weeks or months</li>
-                <li>• Hard to plan around inconsistent estimates</li>
-              </ul>
+              <div className="p-6">
+                {/* Mockup of Google Maps interface */}
+                <div className="bg-background rounded-lg border border-border/50 p-4 mb-4">
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
+                    <Clock className="w-4 h-4" />
+                    <span>Depart at 8:00 AM</span>
+                    <span className="mx-2">•</span>
+                    <Calendar className="w-4 h-4" />
+                    <span>Mon, Jan 12</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <div>
+                      <p className="font-medium text-foreground mb-1">via I-5 S</p>
+                      <p className="text-destructive font-semibold">typically 30 min to 1 hr</p>
+                      <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-destructive mb-1">"typically 30 min to 1 hr"</p>
+                  <p className="text-sm text-muted-foreground">A 30-minute range doesn't help you plan</p>
+                </div>
+              </div>
             </div>
-            <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
-              <div className="flex items-center gap-2 mb-4">
-                <Target className="w-5 h-5 text-primary" />
-                <h3 className="font-semibold text-primary">The MyCommuteData solution</h3>
+
+            {/* MyCommuteData Side */}
+            <div className="rounded-xl overflow-hidden border border-primary/30 bg-card shadow-lg">
+              <div className="bg-primary/10 px-4 py-3 border-b border-primary/20">
+                <div className="flex items-center gap-2">
+                  <Target className="w-4 h-4 text-primary" />
+                  <span className="font-medium text-primary text-sm">MyCommuteData</span>
+                </div>
               </div>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Records exact times: "37 minutes"</li>
-                <li>• Checks at your scheduled commute time daily</li>
-                <li>• Builds a history to see real patterns</li>
-                <li>• Know your actual commute, not a guess</li>
-              </ul>
+              <div className="p-6">
+                <div className="bg-muted/50 rounded-lg border border-border/50 p-4 mb-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
+                      <span className="font-semibold text-foreground">42 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Tue, Jan 7 @ 8:00 AM</span>
+                      <span className="font-semibold text-foreground">38 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Wed, Jan 8 @ 8:00 AM</span>
+                      <span className="font-semibold text-foreground">45 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-sm text-muted-foreground">Thu, Jan 9 @ 8:00 AM</span>
+                      <span className="font-semibold text-foreground">36 min</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-primary mb-1">Exact times, every day</p>
+                  <p className="text-sm text-muted-foreground">Real data to make real decisions</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
