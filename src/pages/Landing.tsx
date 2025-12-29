@@ -85,17 +85,17 @@ export default function Landing() {
                   <div className="flex items-start gap-3">
                     <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="font-medium text-foreground mb-1">via I-5 S</p>
-                      <p className="text-destructive font-semibold">typically 30 min to 1 hr</p>
-                      <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
+                      <p className="font-medium text-foreground mb-1">via I-805 N</p>
+                      <p className="text-destructive font-semibold">typically 22 min to 35 min</p>
+                      <p className="text-sm text-muted-foreground">Arrive around 8:35 AM • 16.9 miles</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="font-medium text-foreground mb-1">via I-5 S</p>
-                      <p className="text-destructive font-semibold">typically 30 min to 1 hr</p>
-                      <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
+                      <p className="font-medium text-foreground mb-1">via I-5 N</p>
+                      <p className="text-destructive font-semibold">typically 26 min to 40 min</p>
+                      <p className="text-sm text-muted-foreground">Arrive around 8:40 AM • 20.6 miles</p>
                     </div>
                   </div>
                 </div>
