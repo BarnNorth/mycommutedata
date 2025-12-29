@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Clock, MapPin, TrendingUp, Zap } from 'lucide-react';
+import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from 'lucide-react';
 
 export default function Landing() {
   return (
@@ -12,7 +12,7 @@ export default function Landing() {
             <div className="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
               <Clock className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-lg">CommuteTracker</span>
+            <span className="font-semibold text-lg">MyCommuteData</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/auth">
@@ -31,18 +31,18 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-24 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Track Your Commute Times{' '}
-              <span className="text-primary">Over Time</span>
+              Get <span className="text-primary">Exact</span> Commute Times,{' '}
+              Not Ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Set it and forget it. Automatically monitor your commute with Google Maps traffic data 
-              and discover the best times to travel.
+              Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute 
+              times automatically, so you know exactly how long your drive really takes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth?mode=signup">
                 <Button size="lg" className="w-full sm:w-auto gap-2">
                   <Zap className="w-4 h-4" />
-                  Get Started Free
+                  Start Tracking Free
                 </Button>
               </Link>
               <Link to="/auth">
@@ -50,6 +50,38 @@ export default function Landing() {
                   Log in
                 </Button>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem/Solution */}
+      <section className="py-16 border-y border-border/50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
+              <div className="flex items-center gap-2 mb-4">
+                <AlertCircle className="w-5 h-5 text-destructive" />
+                <h3 className="font-semibold text-destructive">The Problem with Google Maps</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• Shows vague ranges like "30-60 min"</li>
+                <li>• Can't check traffic at specific future times</li>
+                <li>• No way to track patterns over weeks or months</li>
+                <li>• Hard to plan around inconsistent estimates</li>
+              </ul>
+            </div>
+            <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Target className="w-5 h-5 text-primary" />
+                <h3 className="font-semibold text-primary">The MyCommuteData Solution</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• Records exact times: "37 minutes" not "30-60"</li>
+                <li>• Checks at your scheduled commute time daily</li>
+                <li>• Builds a history to see real patterns</li>
+                <li>• Know your actual commute, not a guess</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -65,17 +97,17 @@ export default function Landing() {
             <FeatureCard
               icon={<MapPin className="w-6 h-6" />}
               title="Add Your Routes"
-              description="Enter your origin and destination addresses, then set when you want to check traffic."
+              description="Enter your home and work addresses. Set the exact time you leave each day."
             />
             <FeatureCard
               icon={<Clock className="w-6 h-6" />}
-              title="Automatic Tracking"
-              description="We check Google Maps at your scheduled times and log the commute duration."
+              title="We Record Daily"
+              description="Every day at your scheduled time, we capture the exact traffic duration—not a range."
             />
             <FeatureCard
               icon={<TrendingUp className="w-6 h-6" />}
-              title="View Insights"
-              description="See your commute history with charts and stats to find the best travel times."
+              title="See Real Patterns"
+              description="View your commute history to find the fastest days and times based on real data."
             />
           </div>
         </div>
@@ -86,10 +118,10 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Start Tracking Today
+              Stop Guessing. Start Knowing.
             </h2>
             <p className="text-muted-foreground mb-8">
-              Join thousands of commuters who have optimized their travel times.
+              Join commuters who finally have accurate data on their drive times.
             </p>
             <Link to="/auth?mode=signup">
               <Button size="lg">Create Free Account</Button>
@@ -101,7 +133,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="border-t border-border py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} CommuteTracker. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} MyCommuteData. All rights reserved.</p>
         </div>
       </footer>
     </div>
