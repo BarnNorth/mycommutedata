@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Clock } from 'lucide-react';
+import { Clock, Plus, X } from 'lucide-react';
 import { z } from 'zod';
 
 const routeSchema = z.object({
   name: z.string().min(1, 'Route name is required').max(100),
   origin_address: z.string().min(1, 'Origin address is required').max(500),
   destination_address: z.string().min(1, 'Destination address is required').max(500),
-  check_time: z.string().min(1, 'Check time is required'),
+  check_times: z.array(z.string()).min(1, 'Add at least one check time'),
   check_days: z.array(z.number()).min(1, 'Select at least one day'),
 });
 
@@ -28,7 +28,7 @@ export interface RouteFormData {
   name: string;
   origin_address: string;
   destination_address: string;
-  check_time: string;
+  check_times: string[];
   check_days: number[];
 }
 
@@ -48,7 +48,7 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
     name: '',
     origin_address: '',
     destination_address: '',
-    check_time: '08:00',
+    check_times: ['08:00'],
     check_days: [1, 2, 3, 4, 5],
   });
 
@@ -64,6 +64,28 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
       check_days: prev.check_days.includes(day)
         ? prev.check_days.filter(d => d !== day)
         : [...prev.check_days, day],
+    }));
+  };
+
+  const addCheckTime = () => {
+    setFormData(prev => ({
+      ...prev,
+      check_times: [...prev.check_times, '08:00'],
+    }));
+  };
+
+  const removeCheckTime = (index: number) => {
+    if (formData.check_times.length <= 1) return;
+    setFormData(prev => ({
+      ...prev,
+      check_times: prev.check_times.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateCheckTime = (index: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      check_times: prev.check_times.map((t, i) => i === index ? value : t),
     }));
   };
 
@@ -91,7 +113,7 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
         name: formData.name.trim(),
         origin_address: formData.origin_address.trim(),
         destination_address: formData.destination_address.trim(),
-        check_time: formData.check_time,
+        check_times: formData.check_times,
         check_days: formData.check_days,
       });
     } finally {
@@ -140,20 +162,46 @@ export default function RouteForm({ initialData, onSubmit, onCancel, submitLabel
         {errors.destination_address && <p className="text-sm text-destructive">{errors.destination_address}</p>}
       </div>
 
-      {/* Check Time */}
-      <div className="space-y-2">
-        <Label htmlFor="check_time" className="flex items-center gap-2">
+      {/* Check Times */}
+      <div className="space-y-3">
+        <Label className="flex items-center gap-2">
           <Clock className="w-4 h-4" />
-          Check Time
+          Check Times
         </Label>
-        <Input
-          id="check_time"
-          type="time"
-          value={formData.check_time}
-          onChange={(e) => setFormData({ ...formData, check_time: e.target.value })}
-          className={`w-40 ${errors.check_time ? 'border-destructive' : ''}`}
-        />
-        {errors.check_time && <p className="text-sm text-destructive">{errors.check_time}</p>}
+        <div className="space-y-2">
+          {formData.check_times.map((time, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <Input
+                type="time"
+                value={time}
+                onChange={(e) => updateCheckTime(index, e.target.value)}
+                className="w-40"
+              />
+              {formData.check_times.length > 1 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 text-muted-foreground hover:text-destructive"
+                  onClick={() => removeCheckTime(index)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="gap-1"
+          onClick={addCheckTime}
+        >
+          <Plus className="w-4 h-4" />
+          Add Time
+        </Button>
+        {errors.check_times && <p className="text-sm text-destructive">{errors.check_times}</p>}
       </div>
 
       {/* Days to Check */}

@@ -52,7 +52,7 @@ export type Database = {
       routes: {
         Row: {
           check_days: number[] | null
-          check_time: string
+          check_time: string[]
           created_at: string
           destination_address: string
           id: string
@@ -63,7 +63,7 @@ export type Database = {
         }
         Insert: {
           check_days?: number[] | null
-          check_time: string
+          check_time: string[]
           created_at?: string
           destination_address: string
           id?: string
@@ -74,7 +74,7 @@ export type Database = {
         }
         Update: {
           check_days?: number[] | null
-          check_time?: string
+          check_time?: string[]
           created_at?: string
           destination_address?: string
           id?: string

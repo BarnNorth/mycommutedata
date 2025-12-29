@@ -11,7 +11,7 @@ interface Route {
   name: string;
   origin_address: string;
   destination_address: string;
-  check_time: string;
+  check_time: string[];
   check_days: number[];
   is_active: boolean;
 }
@@ -99,19 +99,28 @@ Deno.serve(async (req) => {
       const currentMinute = userNow.getMinutes();
       const currentTimeStr = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
 
-      // Parse route check time (format: "HH:MM:SS" or "HH:MM")
-      const checkTimeParts = route.check_time.split(":");
-      const checkHour = parseInt(checkTimeParts[0]);
-      const checkMinute = parseInt(checkTimeParts[1]);
-      const checkTimeStr = `${checkHour.toString().padStart(2, "0")}:${checkMinute.toString().padStart(2, "0")}`;
+      // Check each configured check time
+      const checkTimes = route.check_time || [];
+      let matchedTime: string | null = null;
 
-      // Check if we're within the check window (same minute)
-      if (currentTimeStr !== checkTimeStr) {
-        console.log(`[check-commutes] Route ${route.id} - skipping, not check time (current: ${currentTimeStr}, check: ${checkTimeStr})`);
+      for (const checkTime of checkTimes) {
+        const checkTimeParts = checkTime.split(":");
+        const checkHour = parseInt(checkTimeParts[0]);
+        const checkMinute = parseInt(checkTimeParts[1]);
+        const checkTimeStr = `${checkHour.toString().padStart(2, "0")}:${checkMinute.toString().padStart(2, "0")}`;
+
+        if (currentTimeStr === checkTimeStr) {
+          matchedTime = checkTimeStr;
+          break;
+        }
+      }
+
+      if (!matchedTime) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, not check time (current: ${currentTimeStr}, times: ${checkTimes.join(", ")})`);
         continue;
       }
 
-      // Check if we already logged for this route today
+      // Check if we already logged for this route at this specific time today
       const todayStart = new Date(userNow);
       todayStart.setHours(0, 0, 0, 0);
       const todayEnd = new Date(userNow);
@@ -119,13 +128,21 @@ Deno.serve(async (req) => {
 
       const { data: existingLogs } = await supabase
         .from("commute_logs")
-        .select("id")
+        .select("id, checked_at")
         .eq("route_id", route.id)
         .gte("checked_at", todayStart.toISOString())
         .lte("checked_at", todayEnd.toISOString());
 
-      if (existingLogs && existingLogs.length > 0) {
-        console.log(`[check-commutes] Route ${route.id} - skipping, already checked today`);
+      // Check if we already have a log for this specific time
+      const alreadyLoggedThisTime = existingLogs?.some(log => {
+        const logTime = new Date(log.checked_at);
+        const logHour = logTime.getHours().toString().padStart(2, "0");
+        const logMinute = logTime.getMinutes().toString().padStart(2, "0");
+        return `${logHour}:${logMinute}` === matchedTime;
+      });
+
+      if (alreadyLoggedThisTime) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, already checked at ${matchedTime} today`);
         continue;
       }
 
