@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { MapPin, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
+import { logger } from '@/lib/logger';
 
 export default function AddRoute() {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ export default function AddRoute() {
 
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error creating route:', error);
+      logger.error('Error creating route:', error);
       toast({
         title: 'Error',
         description: 'Failed to create route. Please try again.',
