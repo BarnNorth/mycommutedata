@@ -1,0 +1,197 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+interface Route {
+  id: string;
+  user_id: string;
+  name: string;
+  origin_address: string;
+  destination_address: string;
+  check_time: string;
+  check_days: number[];
+  is_active: boolean;
+}
+
+interface UserSettings {
+  google_maps_api_key: string | null;
+  timezone: string | null;
+}
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Get current time info
+    const now = new Date();
+    const currentDayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    
+    console.log(`[check-commutes] Running at ${now.toISOString()}, day: ${currentDayOfWeek} (${dayNames[currentDayOfWeek]})`);
+
+    // Fetch all active routes
+    const { data: routes, error: routesError } = await supabase
+      .from("routes")
+      .select("*")
+      .eq("is_active", true);
+
+    if (routesError) {
+      console.error("[check-commutes] Error fetching routes:", routesError);
+      throw routesError;
+    }
+
+    if (!routes || routes.length === 0) {
+      console.log("[check-commutes] No active routes found");
+      return new Response(JSON.stringify({ message: "No active routes", checked: 0 }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    console.log(`[check-commutes] Found ${routes.length} active routes`);
+
+    let checkedCount = 0;
+    const results: { routeId: string; success: boolean; message: string }[] = [];
+
+    for (const route of routes as Route[]) {
+      // Check if today is a check day for this route
+      if (!route.check_days || !route.check_days.includes(currentDayOfWeek)) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, not a check day`);
+        continue;
+      }
+
+      // Get user's settings for API key and timezone
+      const { data: settings, error: settingsError } = await supabase
+        .from("user_settings")
+        .select("google_maps_api_key, timezone")
+        .eq("user_id", route.user_id)
+        .single();
+
+      if (settingsError || !settings?.google_maps_api_key) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, no API key configured`);
+        results.push({ routeId: route.id, success: false, message: "No API key" });
+        continue;
+      }
+
+      const userSettings = settings as UserSettings;
+      const timezone = userSettings.timezone || "America/Los_Angeles";
+
+      // Get current time in user's timezone
+      const userNow = new Date(now.toLocaleString("en-US", { timeZone: timezone }));
+      const currentHour = userNow.getHours();
+      const currentMinute = userNow.getMinutes();
+      const currentTimeStr = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+
+      // Parse route check time (format: "HH:MM:SS" or "HH:MM")
+      const checkTimeParts = route.check_time.split(":");
+      const checkHour = parseInt(checkTimeParts[0]);
+      const checkMinute = parseInt(checkTimeParts[1]);
+      const checkTimeStr = `${checkHour.toString().padStart(2, "0")}:${checkMinute.toString().padStart(2, "0")}`;
+
+      // Check if we're within the check window (same minute)
+      if (currentTimeStr !== checkTimeStr) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, not check time (current: ${currentTimeStr}, check: ${checkTimeStr})`);
+        continue;
+      }
+
+      // Check if we already logged for this route today
+      const todayStart = new Date(userNow);
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date(userNow);
+      todayEnd.setHours(23, 59, 59, 999);
+
+      const { data: existingLogs } = await supabase
+        .from("commute_logs")
+        .select("id")
+        .eq("route_id", route.id)
+        .gte("checked_at", todayStart.toISOString())
+        .lte("checked_at", todayEnd.toISOString());
+
+      if (existingLogs && existingLogs.length > 0) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, already checked today`);
+        continue;
+      }
+
+      console.log(`[check-commutes] Route ${route.id} - checking commute from "${route.origin_address}" to "${route.destination_address}"`);
+
+      // Call Google Maps Directions API
+      try {
+        const apiKey = userSettings.google_maps_api_key;
+        const origin = encodeURIComponent(route.origin_address);
+        const destination = encodeURIComponent(route.destination_address);
+        const departureTime = Math.floor(Date.now() / 1000); // Current timestamp
+
+        const mapsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&departure_time=${departureTime}&key=${apiKey}`;
+
+        const mapsResponse = await fetch(mapsUrl);
+        const mapsData = await mapsResponse.json();
+
+        if (mapsData.status !== "OK") {
+          console.error(`[check-commutes] Route ${route.id} - Google Maps API error:`, mapsData.status, mapsData.error_message);
+          results.push({ routeId: route.id, success: false, message: `Maps API: ${mapsData.status}` });
+          continue;
+        }
+
+        const route_data = mapsData.routes[0];
+        const leg = route_data.legs[0];
+
+        // Duration in seconds
+        const durationSeconds = leg.duration.value;
+        const durationInTrafficSeconds = leg.duration_in_traffic?.value || durationSeconds;
+
+        // Convert to minutes
+        const durationMinutes = Math.round(durationSeconds / 60);
+        const durationInTrafficMinutes = Math.round(durationInTrafficSeconds / 60);
+
+        console.log(`[check-commutes] Route ${route.id} - Duration: ${durationMinutes}min, In traffic: ${durationInTrafficMinutes}min`);
+
+        // Insert commute log
+        const { error: insertError } = await supabase
+          .from("commute_logs")
+          .insert({
+            route_id: route.id,
+            duration_minutes: durationMinutes,
+            duration_in_traffic_minutes: durationInTrafficMinutes,
+            day_of_week: dayNames[currentDayOfWeek],
+            checked_at: now.toISOString(),
+          });
+
+        if (insertError) {
+          console.error(`[check-commutes] Route ${route.id} - Error inserting log:`, insertError);
+          results.push({ routeId: route.id, success: false, message: "Insert failed" });
+        } else {
+          checkedCount++;
+          results.push({ routeId: route.id, success: true, message: `${durationInTrafficMinutes}min` });
+          console.log(`[check-commutes] Route ${route.id} - Successfully logged`);
+        }
+      } catch (mapsError) {
+        console.error(`[check-commutes] Route ${route.id} - Error calling Maps API:`, mapsError);
+        results.push({ routeId: route.id, success: false, message: "API call failed" });
+      }
+    }
+
+    console.log(`[check-commutes] Completed. Checked ${checkedCount} routes.`);
+
+    return new Response(
+      JSON.stringify({ message: "Commute check complete", checked: checkedCount, results }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("[check-commutes] Unexpected error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+});
