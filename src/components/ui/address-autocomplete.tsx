@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface Prediction {
   place_id: string;
@@ -50,7 +51,7 @@ export function AddressAutocomplete({
       });
 
       if (error) {
-        console.error('Error fetching predictions:', error);
+        logger.error('Error fetching predictions:', error);
         setPredictions([]);
         return;
       }
@@ -60,7 +61,7 @@ export function AddressAutocomplete({
         setIsOpen(true);
       }
     } catch (err) {
-      console.error('Failed to fetch predictions:', err);
+      logger.error('Failed to fetch predictions:', err);
       setPredictions([]);
     } finally {
       setIsLoading(false);

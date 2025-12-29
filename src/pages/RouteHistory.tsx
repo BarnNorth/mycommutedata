@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Download, Clock, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { format, parseISO, startOfDay } from 'date-fns';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { logger } from '@/lib/logger';
 
 interface Route {
   id: string;
@@ -64,7 +65,7 @@ export default function RouteHistory() {
       if (logsError) throw logsError;
       setLogs(logsData || []);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      logger.error('Error fetching data:', error);
       toast({
         title: 'Error',
         description: 'Failed to load route history.',

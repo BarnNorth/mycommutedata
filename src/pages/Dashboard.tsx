@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, MapPin, Clock, ArrowRight, Pencil, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
+import { logger } from '@/lib/logger';
 
 interface Route {
   id: string;
@@ -84,7 +85,7 @@ export default function Dashboard() {
       if (logsError) throw logsError;
       setRecentLogs(logsData || []);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      logger.error('Error fetching data:', error);
       toast({
         title: 'Error',
         description: 'Failed to load data. Please try again.',
@@ -150,7 +151,7 @@ export default function Dashboard() {
         description: 'Your route has been updated successfully.',
       });
     } catch (error) {
-      console.error('Error updating route:', error);
+      logger.error('Error updating route:', error);
       toast({
         title: 'Error',
         description: 'Failed to update route. Please try again.',
@@ -191,7 +192,7 @@ export default function Dashboard() {
         description: 'The route and its history have been deleted.',
       });
     } catch (error) {
-      console.error('Error deleting route:', error);
+      logger.error('Error deleting route:', error);
       toast({
         title: 'Error',
         description: 'Failed to delete route. Please try again.',

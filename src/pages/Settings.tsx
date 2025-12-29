@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { Settings as SettingsIcon, Globe, Loader2 } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 const TIMEZONES = [
   { value: 'America/Los_Angeles', label: 'Pacific Time (Los Angeles)' },
@@ -55,7 +56,7 @@ export default function Settings() {
         setHasExistingSettings(true);
       }
     } catch (error) {
-      console.error('Error fetching settings:', error);
+      logger.error('Error fetching settings:', error);
     } finally {
       setLoading(false);
     }
@@ -89,7 +90,7 @@ export default function Settings() {
         description: 'Your timezone has been updated.',
       });
     } catch (error) {
-      console.error('Error saving settings:', error);
+      logger.error('Error saving settings:', error);
       toast({
         title: 'Error',
         description: 'Failed to save settings. Please try again.',
