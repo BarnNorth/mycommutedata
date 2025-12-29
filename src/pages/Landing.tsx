@@ -66,7 +66,7 @@ export default function Landing() {
                 <h3 className="font-semibold text-destructive">The Problem with Google Maps</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Shows vague ranges like "30-45 min"</li>
+                <li>• Shows vague ranges like "typically 30 min to 1 hr"</li>
                 <li>• Can't check traffic at specific future times</li>
                 <li>• No way to track patterns over weeks or months</li>
                 <li>• Hard to plan around inconsistent estimates</li>
@@ -78,7 +78,7 @@ export default function Landing() {
                 <h3 className="font-semibold text-primary">The MyCommuteData Solution</h3>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Records exact times: "37 minutes" not "30-45"</li>
+                <li>• Records exact times: "37 minutes"</li>
                 <li>• Checks at your scheduled commute time daily</li>
                 <li>• Builds a history to see real patterns</li>
                 <li>• Know your actual commute, not a guess</li>
