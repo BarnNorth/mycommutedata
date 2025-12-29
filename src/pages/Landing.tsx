@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle } from "lucide-react";
 
 export default function Landing() {
   return (
@@ -16,7 +16,9 @@ export default function Landing() {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/auth">
-              <Button variant="ghost" size="sm">Log in</Button>
+              <Button variant="ghost" size="sm">
+                Log in
+              </Button>
             </Link>
             <Link to="/auth?mode=signup">
               <Button size="sm">Sign up</Button>
@@ -31,11 +33,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-24 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Get <span className="text-primary">Exact</span> Commute Times, Not Ranges
+              Get <span className="text-primary">exact</span> commute times, not ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute 
-              times automatically, so you know exactly how long your drive really takes.
+              Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute times
+              automatically, so you know exactly how long your drive really takes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth?mode=signup">
@@ -89,9 +91,7 @@ export default function Landing() {
       {/* Features */}
       <section className="py-20 bg-card/50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-            How It Works
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <FeatureCard
               icon={<MapPin className="w-6 h-6" />}
@@ -116,9 +116,7 @@ export default function Landing() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Stop Guessing. Start Knowing.
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Stop Guessing. Start Knowing.</h2>
             <p className="text-muted-foreground mb-8">
               Join commuters who finally have accurate data on their drive times.
             </p>
