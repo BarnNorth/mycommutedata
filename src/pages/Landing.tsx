@@ -90,6 +90,14 @@ export default function Landing() {
                       <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
                     </div>
                   </div>
+                  <div className="flex items-start gap-3">
+                    <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <div>
+                      <p className="font-medium text-foreground mb-1">via I-5 S</p>
+                      <p className="text-destructive font-semibold">typically 30 min to 1 hr</p>
+                      <p className="text-sm text-muted-foreground">Arrive around 9:00 AM • 27.1 miles</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="text-center">
                   <p className="text-lg font-semibold text-destructive mb-1">"typically 30 min to 1 hr"</p>
