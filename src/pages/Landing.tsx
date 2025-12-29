@@ -36,7 +36,7 @@ export default function Landing() {
               Get <span className="text-primary">exact</span> commute times, not ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Other map tools show ranges when forecasting future drive times like "30-45 minutes". We record your{" "}
+              Other map tools show ranges when forecasting future drive times like "30-45 minutes". We record{" "}
               <strong>actual</strong> commute times automatically, so you know exactly how long your drive really takes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
