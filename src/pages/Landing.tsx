@@ -31,8 +31,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-24 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Get <span className="text-primary">Exact</span> Commute Times,{' '}
-              Not Ranges
+              Get <span className="text-primary">Exact</span> Commute Times, Not Ranges
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Google Maps shows "30-60 minutes"—not helpful. We record your <strong>actual</strong> commute 
