@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
                 <Clock className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="font-semibold text-lg hidden sm:block">CommuteTracker</span>
+              <span className="font-semibold text-lg hidden sm:block">MyCommuteData</span>
             </Link>
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
