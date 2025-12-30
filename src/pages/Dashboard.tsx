@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, MapPin, Clock, ArrowRight, Pencil, Trash2 } from 'lucide-react';
+import { Plus, MapPin, Clock, ArrowRight, Pencil, Trash2, Copy } from 'lucide-react';
 import { format } from 'date-fns';
 import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
 import { logger } from '@/lib/logger';
@@ -203,6 +203,40 @@ export default function Dashboard() {
     }
   };
 
+  const handleDuplicateRoute = async (route: Route) => {
+    try {
+      const { data, error } = await supabase
+        .from('routes')
+        .insert({
+          user_id: user?.id,
+          name: `${route.name} (Copy)`,
+          origin_address: route.origin_address,
+          destination_address: route.destination_address,
+          check_time: route.check_time,
+          check_days: route.check_days,
+          is_active: true,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setRoutes([data, ...routes]);
+      
+      toast({
+        title: 'Route duplicated',
+        description: `"${data.name}" has been created.`,
+      });
+    } catch (error) {
+      logger.error('Error duplicating route:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to duplicate route. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const openEditDialog = (route: Route) => {
     setEditingRoute(route);
     setIsEditDialogOpen(true);
@@ -284,7 +318,17 @@ export default function Dashboard() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
+                          onClick={() => handleDuplicateRoute(route)}
+                          title="Duplicate route"
+                        >
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
                           onClick={() => openEditDialog(route)}
+                          title="Edit route"
                         >
                           <Pencil className="w-4 h-4" />
                         </Button>
@@ -293,6 +337,7 @@ export default function Dashboard() {
                           size="icon"
                           className="h-8 w-8 text-destructive hover:text-destructive"
                           onClick={() => openDeleteDialog(route)}
+                          title="Delete route"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
