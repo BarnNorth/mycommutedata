@@ -311,36 +311,36 @@ export default function Dashboard() {
               {routes.map((route) => (
                 <Card key={route.id} className="shadow-card hover:shadow-soft transition-shadow">
                   <CardHeader className="pb-2">
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg">{route.name}</CardTitle>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => handleDuplicateRoute(route)}
-                          title="Duplicate route"
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => openEditDialog(route)}
-                          title="Edit route"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-destructive hover:text-destructive"
-                          onClick={() => openDeleteDialog(route)}
-                          title="Delete route"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                    <CardTitle className="text-lg">{route.name}</CardTitle>
+                    <div className="flex items-center gap-1 pt-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => handleDuplicateRoute(route)}
+                        title="Duplicate route"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => openEditDialog(route)}
+                        title="Edit route"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-destructive hover:text-destructive"
+                        onClick={() => openDeleteDialog(route)}
+                        title="Delete route"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                      <div className="ml-auto">
                         <Switch
                           checked={route.is_active}
                           onCheckedChange={(checked) => toggleRoute(route.id, checked)}
