@@ -35,10 +35,9 @@ Deno.serve(async (req) => {
 
     // Get current time info
     const now = new Date();
-    const currentDayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
-    console.log(`[check-commutes] Running at ${now.toISOString()}, day: ${currentDayOfWeek} (${dayNames[currentDayOfWeek]})`);
+    console.log(`[check-commutes] Running at ${now.toISOString()}`);
 
     // Fetch all active routes
     const { data: routes, error: routesError } = await supabase
@@ -74,13 +73,7 @@ Deno.serve(async (req) => {
     const results: { routeId: string; success: boolean; message: string }[] = [];
 
     for (const route of routes as Route[]) {
-      // Check if today is a check day for this route
-      if (!route.check_days || !route.check_days.includes(currentDayOfWeek)) {
-        console.log(`[check-commutes] Route ${route.id} - skipping, not a check day`);
-        continue;
-      }
-
-      // Get user's settings for timezone
+      // Get user's settings for timezone FIRST (needed for day check)
       const { data: settings } = await supabase
         .from("user_settings")
         .select("timezone")
@@ -95,9 +88,18 @@ Deno.serve(async (req) => {
 
       // Get current time in user's timezone
       const userNow = new Date(now.toLocaleString("en-US", { timeZone: timezone }));
+      const userDayOfWeek = userNow.getDay(); // Day in USER's timezone
       const currentHour = userNow.getHours();
       const currentMinute = userNow.getMinutes();
       const currentTimeStr = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+      
+      console.log(`[check-commutes] Route ${route.id} - user timezone: ${timezone}, day: ${userDayOfWeek} (${dayNames[userDayOfWeek]}), time: ${currentTimeStr}`);
+
+      // Check if today is a check day for this route (using user's timezone day)
+      if (!route.check_days || !route.check_days.includes(userDayOfWeek)) {
+        console.log(`[check-commutes] Route ${route.id} - skipping, not a check day (user day: ${userDayOfWeek})`);
+        continue;
+      }
 
       // Check each configured check time
       const checkTimes = route.check_time || [];
@@ -185,7 +187,7 @@ Deno.serve(async (req) => {
             route_id: route.id,
             duration_minutes: durationMinutes,
             duration_in_traffic_minutes: durationInTrafficMinutes,
-            day_of_week: dayNames[currentDayOfWeek],
+            day_of_week: dayNames[userDayOfWeek],
             checked_at: now.toISOString(),
           });
 
