@@ -3,18 +3,33 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, MapPin, Clock, ArrowRight, Pencil, Trash2, Copy } from 'lucide-react';
+import { Plus, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
+import DraggableRouteCard from '@/components/routes/DraggableRouteCard';
 import { logger } from '@/lib/logger';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
 
 interface Route {
   id: string;
@@ -37,7 +52,7 @@ interface CommuteLog {
   };
 }
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -247,25 +262,31 @@ export default function Dashboard() {
     setIsDeleteDialogOpen(true);
   };
 
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
-    return format(date, 'h:mm a');
-  };
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-  const formatTimes = (times: string[]) => {
-    if (times.length <= 2) {
-      return times.map(formatTime).join(', ');
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setRoutes((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+      toast({
+        title: 'Routes reordered',
+        description: 'Your route order has been updated.',
+      });
     }
-    return `${formatTime(times[0])} +${times.length - 1} more`;
-  };
-
-  const getDaysLabel = (days: number[]) => {
-    if (days.length === 7) return 'Every day';
-    if (JSON.stringify(days.sort()) === JSON.stringify([1, 2, 3, 4, 5])) return 'Weekdays';
-    if (JSON.stringify(days.sort()) === JSON.stringify([0, 6])) return 'Weekends';
-    return days.map(d => DAYS[d]).join(', ');
   };
 
   if (loading) {
@@ -307,73 +328,29 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {routes.map((route) => (
-                <Card key={route.id} className="shadow-card hover:shadow-soft transition-shadow">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">{route.name}</CardTitle>
-                    <div className="flex items-center gap-1 pt-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => handleDuplicateRoute(route)}
-                        title="Duplicate route"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => openEditDialog(route)}
-                        title="Edit route"
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => openDeleteDialog(route)}
-                        title="Delete route"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                      <div className="ml-auto">
-                        <Switch
-                          checked={route.is_active}
-                          onCheckedChange={(checked) => toggleRoute(route.id, checked)}
-                        />
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-start gap-2 text-sm">
-                      <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="truncate">{route.origin_address}</p>
-                        <ArrowRight className="w-3 h-3 text-muted-foreground my-1" />
-                        <p className="truncate">{route.destination_address}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
-                      <span>{formatTimes(route.check_time)}</span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className="text-muted-foreground">{getDaysLabel(route.check_days)}</span>
-                    </div>
-                    <div className="pt-2">
-                      <Link to={`/routes/${route.id}`}>
-                        <Button variant="outline" size="sm" className="w-full">
-                          View History
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={routes.map(r => r.id)}
+                strategy={rectSortingStrategy}
+              >
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {routes.map((route) => (
+                    <DraggableRouteCard
+                      key={route.id}
+                      route={route}
+                      onToggle={toggleRoute}
+                      onEdit={openEditDialog}
+                      onDelete={openDeleteDialog}
+                      onDuplicate={handleDuplicateRoute}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           )}
         </div>
 
