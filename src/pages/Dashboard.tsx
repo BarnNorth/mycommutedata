@@ -39,6 +39,7 @@ interface Route {
   check_time: string[];
   check_days: number[];
   is_active: boolean;
+  display_order: number;
 }
 
 interface CommuteLog {
@@ -78,11 +79,11 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-      // Fetch routes
+      // Fetch routes ordered by display_order
       const { data: routesData, error: routesError } = await supabase
         .from('routes')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('display_order', { ascending: true });
 
       if (routesError) throw routesError;
       setRoutes(routesData || []);
@@ -273,19 +274,42 @@ export default function Dashboard() {
     })
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setRoutes((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-      toast({
-        title: 'Routes reordered',
-        description: 'Your route order has been updated.',
-      });
+      const oldIndex = routes.findIndex((item) => item.id === active.id);
+      const newIndex = routes.findIndex((item) => item.id === over.id);
+      const newRoutes = arrayMove(routes, oldIndex, newIndex);
+      
+      // Update local state immediately for responsiveness
+      setRoutes(newRoutes);
+
+      // Persist to database
+      try {
+        const updates = newRoutes.map((route, index) => 
+          supabase
+            .from('routes')
+            .update({ display_order: index })
+            .eq('id', route.id)
+        );
+        
+        await Promise.all(updates);
+        
+        toast({
+          title: 'Routes reordered',
+          description: 'Your route order has been saved.',
+        });
+      } catch (error) {
+        logger.error('Error saving route order:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to save route order.',
+          variant: 'destructive',
+        });
+        // Revert on error
+        fetchData();
+      }
     }
   };
 

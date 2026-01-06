@@ -55,6 +55,7 @@ export type Database = {
           check_time: string[]
           created_at: string
           destination_address: string
+          display_order: number | null
           id: string
           is_active: boolean | null
           name: string
@@ -66,6 +67,7 @@ export type Database = {
           check_time: string[]
           created_at?: string
           destination_address: string
+          display_order?: number | null
           id?: string
           is_active?: boolean | null
           name: string
@@ -77,6 +79,7 @@ export type Database = {
           check_time?: string[]
           created_at?: string
           destination_address?: string
+          display_order?: number | null
           id?: string
           is_active?: boolean | null
           name?: string
