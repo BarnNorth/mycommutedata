@@ -65,36 +65,59 @@ export default function Landing() {
             {/* Right Side - Comparison Cards */}
             <div className="flex flex-col gap-6 animate-slide-up">
               {/* Other Map Tools Card */}
-              <div className="bg-card border border-border rounded-2xl p-6 transform -rotate-1 hover-lift">
-                <div className="flex items-center gap-2 mb-4">
+              <div className="bg-card border border-destructive/30 rounded-2xl overflow-hidden transform -rotate-1 hover-lift">
+                <div className="bg-destructive/10 px-4 py-3 border-b border-destructive/20">
                   <span className="text-destructive text-sm font-medium">❌ Other Map Tools</span>
                 </div>
-                <div className="space-y-2 text-muted-foreground">
-                  <p className="text-lg">Monday @ 8am:</p>
-                  <p className="text-2xl font-bold text-destructive">"typically 25-45 min"</p>
-                  <p className="text-sm italic">Cool... so should I leave at 7:15 or 7:45? 🤷</p>
+                <div className="p-6">
+                  <div className="text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
+                    Depart at 8:00 AM • Mon, Jan 12
+                  </div>
+                  <div className="space-y-3 mb-4">
+                    <div>
+                      <p className="font-medium mb-1">via I-805 N</p>
+                      <p className="text-destructive font-semibold">typically 22 min to 35 min</p>
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">via I-5 N</p>
+                      <p className="text-destructive font-semibold">typically 26 min to 40 min</p>
+                    </div>
+                  </div>
+                  <div className="text-center pt-4 border-t border-border/30">
+                    <p className="font-semibold text-destructive">"typically" does not help</p>
+                    <p className="text-sm text-muted-foreground">A range doesn't help you plan</p>
+                  </div>
                 </div>
               </div>
 
               {/* CommutesDontSuck Card */}
-              <div className="bg-card border-2 border-accent rounded-2xl p-6 transform rotate-2 shadow-teal hover-lift">
-                <div className="flex items-center gap-2 mb-4">
+              <div className="bg-card border-2 border-accent rounded-2xl overflow-hidden transform rotate-2 shadow-teal hover-lift">
+                <div className="bg-accent/10 px-4 py-3 border-b border-accent/20">
                   <span className="text-accent text-sm font-medium">✅ CommutesDontSuck</span>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Mon:</span>
-                    <span className="font-bold">42m 😤</span>
+                <div className="p-6">
+                  <div className="space-y-3 mb-4">
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
+                      <span className="font-semibold">42 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Tue, Jan 7 @ 8:00 AM</span>
+                      <span className="font-semibold">38 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">Wed, Jan 8 @ 8:00 AM</span>
+                      <span className="font-semibold">45 min</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-sm text-muted-foreground">Thu, Jan 9 @ 8:00 AM</span>
+                      <span className="font-semibold">36 min</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Wed:</span>
-                    <span className="font-bold text-success">28m 😊</span>
+                  <div className="text-center pt-4 border-t border-border/30">
+                    <p className="font-semibold text-accent">Exact times, every day</p>
+                    <p className="text-sm text-muted-foreground">Real data to make real decisions</p>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Fri:</span>
-                    <span className="font-bold text-success">31m 😊</span>
-                  </div>
-                  <p className="text-sm text-accent pt-2">Now you can actually plan your life ✨</p>
                 </div>
               </div>
             </div>
