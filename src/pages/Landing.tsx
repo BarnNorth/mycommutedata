@@ -1,207 +1,277 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, TrendingUp, Zap, Target, AlertCircle, Car, Calendar } from "lucide-react";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
-              <Clock className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-semibold text-lg">MyCommuteData</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link to="/auth">
-              <Button variant="ghost" size="sm">
-                Log in
-              </Button>
-            </Link>
-            <Link to="/auth?mode=signup">
-              <Button size="sm">Sign up</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* Animated Road Lines Background */}
+      <div className="fixed inset-0 road-lines opacity-30 pointer-events-none" />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-hero opacity-5" />
-        <div className="container mx-auto px-4 py-24 md:py-32 relative">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Get <span className="text-primary">exact</span> commute times, not ranges
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Other map tools show ranges when forecasting future drive times. We record <strong>actual</strong> commute
-              times automatically, so you can see real historical data.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/auth?mode=signup">
-                <Button size="lg" className="w-full sm:w-auto gap-2">
-                  <Zap className="w-4 h-4" />
-                  Start Tracking Free
-                </Button>
-              </Link>
-              <Link to="/auth">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                  Log in
-                </Button>
-              </Link>
+      {/* Floating Logo - Top Left */}
+      <Link 
+        to="/" 
+        className="fixed top-6 left-6 z-50 flex items-center gap-2 animate-float"
+      >
+        <div className="w-10 h-10 rounded-xl gradient-orange flex items-center justify-center text-xl shadow-orange">
+          🚗
+        </div>
+        <span className="font-bold text-lg hidden sm:block">CommutesDontSuck</span>
+      </Link>
+
+      {/* Floating Nav - Top Right */}
+      <nav className="fixed top-6 right-6 z-50 flex items-center gap-3 bg-card/80 backdrop-blur-md rounded-full px-4 py-2 border border-border">
+        <Link to="/auth">
+          <Button variant="ghost" size="sm" className="rounded-full">
+            Log in
+          </Button>
+        </Link>
+        <Link to="/auth?mode=signup">
+          <Button size="sm" className="rounded-full gradient-orange border-0">
+            Sign up
+          </Button>
+        </Link>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center relative pt-20 pb-16">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center">
+            {/* Left Side - Headlines */}
+            <div className="animate-fade-in">
+              <h1 className="text-hero mb-6">
+                Your commute might{" "}
+                <span className="text-primary italic relative">
+                  <span className="relative">
+                    suck
+                    <span className="absolute left-0 right-0 top-1/2 h-1 bg-accent -rotate-2" />
+                  </span>
+                </span>
+                {" "}but you'll know exactly when
+              </h1>
+              <p className="text-hero-sub text-muted-foreground mb-8 max-w-xl">
+                Other map apps give you vague ranges like "25-45 min." We track your actual commute times so you can stop guessing and start planning.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/auth?mode=signup">
+                  <Button 
+                    size="lg" 
+                    className="w-full sm:w-auto text-lg px-8 py-6 rounded-2xl gradient-orange border-0 shadow-orange hover:scale-105 transition-transform duration-300"
+                  >
+                    Track My Commute (It's Free) 🚗
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Side - Comparison Cards */}
+            <div className="flex flex-col gap-6 animate-slide-up">
+              {/* Other Map Tools Card */}
+              <div className="bg-card border border-border rounded-2xl p-6 transform -rotate-1 hover-lift">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-destructive text-sm font-medium">❌ Other Map Tools</span>
+                </div>
+                <div className="space-y-2 text-muted-foreground">
+                  <p className="text-lg">Monday @ 8am:</p>
+                  <p className="text-2xl font-bold text-destructive">"typically 25-45 min"</p>
+                  <p className="text-sm italic">Cool... so should I leave at 7:15 or 7:45? 🤷</p>
+                </div>
+              </div>
+
+              {/* CommutesDontSuck Card */}
+              <div className="bg-card border-2 border-accent rounded-2xl p-6 transform rotate-2 shadow-teal hover-lift">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-accent text-sm font-medium">✅ CommutesDontSuck</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Mon:</span>
+                    <span className="font-bold">42m 😤</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Wed:</span>
+                    <span className="font-bold text-success">28m 😊</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Fri:</span>
+                    <span className="font-bold text-success">31m 😊</span>
+                  </div>
+                  <p className="text-sm text-accent pt-2">Now you can actually plan your life ✨</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Visual Comparison */}
-      <section className="py-16 border-y border-border/50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">See the Difference</h2>
-          <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-            Other map tools give you vague ranges. We give you real data.
+      {/* Problem Section - Skewed */}
+      <section className="py-24 gradient-orange skew-section">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primary-foreground">
+            Why map apps are lying to you
+          </h2>
+          <p className="text-center text-primary-foreground/80 mb-16 text-lg">
+            (or at least, not telling the full truth)
           </p>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Google Maps Side */}
-            <div className="rounded-xl overflow-hidden border border-destructive/30 bg-card shadow-lg">
-              <div className="bg-destructive/10 px-4 py-3 border-b border-destructive/20">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-destructive" />
-                  <span className="font-medium text-destructive text-sm">Other Map Tools</span>
-                </div>
-              </div>
-              <div className="p-6">
-                {/* Mockup of Google Maps interface */}
-                <div className="bg-background rounded-lg border border-border/50 p-4 mb-4 h-[220px]">
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
-                    <Clock className="w-4 h-4" />
-                    <span>Depart at 8:00 AM</span>
-                    <span className="mx-2">•</span>
-                    <Calendar className="w-4 h-4" />
-                    <span>Mon, Jan 12</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
-                    <div>
-                      <p className="font-medium text-foreground mb-1">via I-805 N</p>
-                      <p className="text-destructive font-semibold">typically 22 min to 35 min</p>
-                      <p className="text-sm text-muted-foreground">Arrive around 8:35 AM • 16.9 miles</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Car className="w-5 h-5 text-muted-foreground mt-0.5" />
-                    <div>
-                      <p className="font-medium text-foreground mb-1">via I-5 N</p>
-                      <p className="text-destructive font-semibold">typically 26 min to 40 min</p>
-                      <p className="text-sm text-muted-foreground">Arrive around 8:40 AM • 20.6 miles</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-destructive mb-1">"typically" does not help</p>
-                  <p className="text-sm text-muted-foreground">A range doesn't help you plan or make decisions</p>
-                </div>
-              </div>
-            </div>
-
-            {/* MyCommuteData Side */}
-            <div className="rounded-xl overflow-hidden border border-primary/30 bg-card shadow-lg">
-              <div className="bg-primary/10 px-4 py-3 border-b border-primary/20">
-                <div className="flex items-center gap-2">
-                  <Target className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-primary text-sm">MyCommuteData</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="bg-muted/50 rounded-lg border border-border/50 p-4 mb-4 h-[220px]">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
-                      <span className="font-semibold text-foreground">42 min</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Tue, Jan 7 @ 8:00 AM</span>
-                      <span className="font-semibold text-foreground">38 min</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Wed, Jan 8 @ 8:00 AM</span>
-                      <span className="font-semibold text-foreground">45 min</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-sm text-muted-foreground">Thu, Jan 9 @ 8:00 AM</span>
-                      <span className="font-semibold text-foreground">36 min</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-primary mb-1">Exact times, every day</p>
-                  <p className="text-sm text-muted-foreground">Real data to make real decisions</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 bg-card/50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <FeatureCard
-              icon={<MapPin className="w-6 h-6" />}
-              title="Add Your Routes"
-              description="Enter your home and work addresses. Set the exact time you leave each day."
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <ProblemCard
+              emoji="🏠"
+              title="House Hunting"
+              description="You're comparing neighborhoods but have no idea what rush hour actually looks like on that route."
             />
-            <FeatureCard
-              icon={<Clock className="w-6 h-6" />}
-              title="We Record Daily"
-              description="Every day at your scheduled time, we capture the exact traffic duration—not a range."
+            <ProblemCard
+              emoji="💼"
+              title="New Job Offer"
+              description="They say '30 minute commute' but you suspect that's wildly optimistic for 8am traffic."
             />
-            <FeatureCard
-              icon={<TrendingUp className="w-6 h-6" />}
-              title="See Real Patterns"
-              description="View your commute history to find the fastest days and times based on real data."
+            <ProblemCard
+              emoji="⏰"
+              title="Flexible Schedule"
+              description="You can choose your hours but don't know which times actually have lighter traffic."
             />
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
+      {/* Features Section - Bento Grid */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            How it works
+          </h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">
+            Set it up once, get insights forever
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            {/* Large Card - 2x2 */}
+            <div className="md:col-span-2 md:row-span-2 bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
+              <div className="text-5xl mb-6">🎯</div>
+              <h3 className="text-2xl font-bold mb-3">Set Your Routes</h3>
+              <p className="text-muted-foreground text-lg">
+                Add your home, work, gym, daycare—wherever you drive. Pick the times you actually leave. We'll handle the rest.
+              </p>
+            </div>
+
+            {/* Wide Card - 2x1 */}
+            <div className="md:col-span-2 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
+              <div className="text-4xl mb-4">🤖</div>
+              <h3 className="text-xl font-bold mb-2">We Check Automatically</h3>
+              <p className="text-muted-foreground">
+                Every day at your scheduled times, we capture the exact traffic duration. No manual logging needed.
+              </p>
+            </div>
+
+            {/* 1x1 Cards */}
+            <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
+              <div className="text-4xl mb-4">📊</div>
+              <h3 className="text-xl font-bold mb-2">See Patterns</h3>
+              <p className="text-muted-foreground text-sm">
+                Discover which days and times are actually fastest.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
+              <div className="text-4xl mb-4">😊</div>
+              <h3 className="text-xl font-bold mb-2">Visual Ratings</h3>
+              <p className="text-muted-foreground text-sm">
+                Emoji indicators so you know at a glance if traffic sucks.
+              </p>
+            </div>
+
+            {/* Wide Card - 2x1 */}
+            <div className="md:col-span-2 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
+              <div className="text-4xl mb-4">📅</div>
+              <h3 className="text-xl font-bold mb-2">Historical Data</h3>
+              <p className="text-muted-foreground">
+                Build up weeks and months of real data. Export to CSV anytime. Your data, your way.
+              </p>
+            </div>
+
+            {/* 1x1 Card */}
+            <div className="md:col-span-2 lg:col-span-1 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
+              <div className="text-4xl mb-4">🚦</div>
+              <h3 className="text-xl font-bold mb-2">Real Numbers</h3>
+              <p className="text-muted-foreground text-sm">
+                No more "typically." Just facts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Data Showcase Section */}
+      <section className="py-24 bg-card/50">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            The kind of insights you'll get
+          </h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">
+            Real data from real commutes
+          </p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6 max-w-4xl mx-auto">
+            {/* Best Time Card */}
+            <div className="bg-card border-2 border-success rounded-2xl p-8 transform -rotate-2 -translate-y-5 hover-lift w-full md:w-72">
+              <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Best Time</p>
+              <p className="text-5xl font-black text-success mb-2">28m 😊</p>
+              <p className="text-muted-foreground text-sm">Wednesday at 7:30am is your sweet spot</p>
+            </div>
+
+            {/* Average Card */}
+            <div className="bg-card border-2 border-warning rounded-2xl p-8 transform translate-y-5 hover-lift w-full md:w-72">
+              <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Average</p>
+              <p className="text-5xl font-black text-warning mb-2">41m 😐</p>
+              <p className="text-muted-foreground text-sm">Your typical commute experience</p>
+            </div>
+
+            {/* Worst Time Card */}
+            <div className="bg-card border-2 border-destructive rounded-2xl p-8 transform rotate-2 -translate-y-2.5 hover-lift w-full md:w-72">
+              <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Worst Time</p>
+              <p className="text-5xl font-black text-destructive mb-2">58m 😤</p>
+              <p className="text-muted-foreground text-sm">Monday at 8am. Avoid at all costs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section - Skewed Reverse */}
+      <section className="py-24 gradient-teal skew-section-reverse">
+        <div className="container mx-auto px-6">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Stop Guessing. Start Knowing.</h2>
-            <p className="text-muted-foreground mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-accent-foreground">
+              Stop guessing. Start knowing.
+            </h2>
+            <p className="text-accent-foreground/80 mb-8 text-lg">
               Join commuters who finally have accurate data on their drive times.
             </p>
             <Link to="/auth?mode=signup">
-              <Button size="lg">Create Free Account</Button>
+              <Button 
+                size="lg" 
+                className="text-lg px-10 py-6 rounded-2xl bg-background text-accent hover:bg-background/90 hover:scale-105 transition-all duration-300"
+              >
+                Hell yeah, track my commute 🚗
+              </Button>
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} MyCommuteData. All rights reserved.</p>
+      <footer className="py-12 border-t border-border">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-muted-foreground">
+            © {new Date().getFullYear()} CommutesDontSuck · Made for people who are tired of "typically"
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+function ProblemCard({ emoji, title, description }: { emoji: string; title: string; description: string }) {
   return (
-    <div className="p-6 rounded-xl bg-card shadow-card border border-border/50 animate-slide-up">
-      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4">
-        {icon}
-      </div>
-      <h3 className="font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-muted-foreground text-sm">{description}</p>
+    <div className="bg-primary-foreground/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-primary-foreground/20">
+      <div className="text-5xl mb-4">{emoji}</div>
+      <h3 className="text-xl font-bold mb-2 text-primary-foreground">{title}</h3>
+      <p className="text-primary-foreground/80">{description}</p>
     </div>
   );
 }
