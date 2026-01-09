@@ -63,60 +63,60 @@ export default function Landing() {
             </div>
 
             {/* Right Side - Comparison Cards */}
-            <div className="flex flex-col gap-6 animate-slide-up">
+            <div className="flex flex-col gap-4 animate-slide-up max-w-xs">
               {/* Other Map Tools Card */}
-              <div className="bg-card border border-destructive/30 rounded-2xl overflow-hidden transform -rotate-1 hover-lift">
-                <div className="bg-destructive/10 px-4 py-3 border-b border-destructive/20">
-                  <span className="text-destructive text-sm font-medium">❌ Other Map Tools</span>
+              <div className="bg-card border border-destructive/30 rounded-xl overflow-hidden transform -rotate-1 hover-lift text-sm">
+                <div className="bg-destructive/10 px-3 py-2 border-b border-destructive/20">
+                  <span className="text-destructive text-xs font-medium">❌ Other Map Tools</span>
                 </div>
-                <div className="p-6">
-                  <div className="text-sm text-muted-foreground mb-3 pb-3 border-b border-border/30">
+                <div className="p-4">
+                  <div className="text-xs text-muted-foreground mb-2 pb-2 border-b border-border/30">
                     Depart at 8:00 AM • Mon, Jan 12
                   </div>
-                  <div className="space-y-3 mb-4">
+                  <div className="space-y-2 mb-3">
                     <div>
-                      <p className="font-medium mb-1">via I-805 N</p>
-                      <p className="text-destructive font-semibold">typically 22 min to 35 min</p>
+                      <p className="font-medium text-sm mb-0.5">via I-805 N</p>
+                      <p className="text-destructive font-semibold text-sm">typically 22 min to 35 min</p>
                     </div>
                     <div>
-                      <p className="font-medium mb-1">via I-5 N</p>
-                      <p className="text-destructive font-semibold">typically 26 min to 40 min</p>
+                      <p className="font-medium text-sm mb-0.5">via I-5 N</p>
+                      <p className="text-destructive font-semibold text-sm">typically 26 min to 40 min</p>
                     </div>
                   </div>
-                  <div className="text-center pt-4 border-t border-border/30">
-                    <p className="font-semibold text-destructive">"typically" does not help</p>
-                    <p className="text-sm text-muted-foreground">A range doesn't help you plan</p>
+                  <div className="text-center pt-3 border-t border-border/30">
+                    <p className="font-semibold text-destructive text-sm">"typically" does not help</p>
+                    <p className="text-xs text-muted-foreground">A range doesn't help you plan</p>
                   </div>
                 </div>
               </div>
 
               {/* CommutesDontSuck Card */}
-              <div className="bg-card border-2 border-accent rounded-2xl overflow-hidden transform rotate-2 shadow-teal hover-lift">
-                <div className="bg-accent/10 px-4 py-3 border-b border-accent/20">
-                  <span className="text-accent text-sm font-medium">✅ CommutesDontSuck</span>
+              <div className="bg-card border-2 border-accent rounded-xl overflow-hidden transform rotate-2 shadow-teal hover-lift text-sm">
+                <div className="bg-accent/10 px-3 py-2 border-b border-accent/20">
+                  <span className="text-accent text-xs font-medium">✅ CommutesDontSuck</span>
                 </div>
-                <div className="p-6">
-                  <div className="space-y-3 mb-4">
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
-                      <span className="font-semibold">42 min</span>
+                <div className="p-4">
+                  <div className="space-y-2 mb-3">
+                    <div className="flex justify-between items-center py-1.5 border-b border-border/30">
+                      <span className="text-xs text-muted-foreground">Mon, Jan 6 @ 8:00 AM</span>
+                      <span className="font-semibold text-sm">42 min</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Tue, Jan 7 @ 8:00 AM</span>
-                      <span className="font-semibold">38 min</span>
+                    <div className="flex justify-between items-center py-1.5 border-b border-border/30">
+                      <span className="text-xs text-muted-foreground">Tue, Jan 7 @ 8:00 AM</span>
+                      <span className="font-semibold text-sm">38 min</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">Wed, Jan 8 @ 8:00 AM</span>
-                      <span className="font-semibold">45 min</span>
+                    <div className="flex justify-between items-center py-1.5 border-b border-border/30">
+                      <span className="text-xs text-muted-foreground">Wed, Jan 8 @ 8:00 AM</span>
+                      <span className="font-semibold text-sm">45 min</span>
                     </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-sm text-muted-foreground">Thu, Jan 9 @ 8:00 AM</span>
-                      <span className="font-semibold">36 min</span>
+                    <div className="flex justify-between items-center py-1.5">
+                      <span className="text-xs text-muted-foreground">Thu, Jan 9 @ 8:00 AM</span>
+                      <span className="font-semibold text-sm">36 min</span>
                     </div>
                   </div>
-                  <div className="text-center pt-4 border-t border-border/30">
-                    <p className="font-semibold text-accent">Exact times, every day</p>
-                    <p className="text-sm text-muted-foreground">Real data to make real decisions</p>
+                  <div className="text-center pt-3 border-t border-border/30">
+                    <p className="font-semibold text-accent text-sm">Exact times, every day</p>
+                    <p className="text-xs text-muted-foreground">Real data to make real decisions</p>
                   </div>
                 </div>
               </div>
