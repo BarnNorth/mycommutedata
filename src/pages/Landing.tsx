@@ -39,14 +39,13 @@ export default function Landing() {
             {/* Left Side - Headlines */}
             <div className="animate-fade-in">
               <h1 className="text-hero mb-6">
-                Your commute might{" "}
+                Make your commute{" "}
                 <span className="text-primary italic relative">
                   <span className="relative">
-                    suck
+                    not suck
                     <span className="absolute left-0 right-0 top-1/2 h-1 bg-accent -rotate-2" />
                   </span>
                 </span>
-                {" "}but you'll know exactly when
               </h1>
               <p className="text-hero-sub text-muted-foreground mb-8 max-w-xl">
                 Other map apps give you vague ranges like "25-45 min." We track your actual commute times so you can stop guessing and start planning.
