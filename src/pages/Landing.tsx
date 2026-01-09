@@ -8,10 +8,7 @@ export default function Landing() {
       <div className="fixed inset-0 road-lines opacity-30 pointer-events-none" />
 
       {/* Floating Logo - Top Left */}
-      <Link 
-        to="/" 
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 animate-float"
-      >
+      <Link to="/" className="fixed top-6 left-6 z-50 flex items-center gap-2 animate-float">
         <div className="w-10 h-10 rounded-xl gradient-orange flex items-center justify-center text-xl shadow-orange">
           🚗
         </div>
@@ -48,12 +45,13 @@ export default function Landing() {
                 </span>
               </h1>
               <p className="text-hero-sub text-muted-foreground mb-8 max-w-xl">
-                Other map apps give you vague ranges like "25-45 min." We track your actual commute times so you can stop guessing and start planning.
+                Other map apps give you vague ranges like "25-45 min." We track your actual commute times so you can
+                stop guessing and start planning.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/auth?mode=signup">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="w-full sm:w-auto text-lg px-8 py-6 rounded-2xl gradient-orange border-0 shadow-orange hover:scale-105 transition-transform duration-300"
                   >
                     Track My Commute (It's Free) 🚗
@@ -129,7 +127,7 @@ export default function Landing() {
       <section className="py-24 gradient-orange skew-section">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primary-foreground">
-            Why map apps are lying to you
+            Why do you need this?
           </h2>
           <p className="text-center text-primary-foreground/80 mb-16 text-lg">
             (or at least, not telling the full truth)
@@ -157,19 +155,16 @@ export default function Landing() {
       {/* Features Section - Bento Grid */}
       <section className="py-24">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            How it works
-          </h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">
-            Set it up once, get insights forever
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How it works</h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">Set it up once, get insights forever</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {/* Large Card - 2x2 */}
             <div className="md:col-span-2 md:row-span-2 bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
               <div className="text-5xl mb-6">🎯</div>
               <h3 className="text-2xl font-bold mb-3">Set Your Routes</h3>
               <p className="text-muted-foreground text-lg">
-                Add your home, work, gym, daycare—wherever you drive. Pick the times you actually leave. We'll handle the rest.
+                Add your home, work, gym, daycare—wherever you drive. Pick the times you actually leave. We'll handle
+                the rest.
               </p>
             </div>
 
@@ -186,9 +181,7 @@ export default function Landing() {
             <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
               <div className="text-4xl mb-4">📊</div>
               <h3 className="text-xl font-bold mb-2">See Patterns</h3>
-              <p className="text-muted-foreground text-sm">
-                Discover which days and times are actually fastest.
-              </p>
+              <p className="text-muted-foreground text-sm">Discover which days and times are actually fastest.</p>
             </div>
 
             <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
@@ -212,9 +205,7 @@ export default function Landing() {
             <div className="md:col-span-2 lg:col-span-1 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
               <div className="text-4xl mb-4">🚦</div>
               <h3 className="text-xl font-bold mb-2">Real Numbers</h3>
-              <p className="text-muted-foreground text-sm">
-                No more "typically." Just facts.
-              </p>
+              <p className="text-muted-foreground text-sm">No more "typically." Just facts.</p>
             </div>
           </div>
         </div>
@@ -223,12 +214,8 @@ export default function Landing() {
       {/* Data Showcase Section */}
       <section className="py-24 bg-card/50">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            The kind of insights you'll get
-          </h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">
-            Real data from real commutes
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">The kind of insights you'll get</h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">Real data from real commutes</p>
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 max-w-4xl mx-auto">
             {/* Best Time Card */}
             <div className="bg-card border-2 border-success rounded-2xl p-8 transform -rotate-2 -translate-y-5 hover-lift w-full md:w-72">
@@ -265,8 +252,8 @@ export default function Landing() {
               Join commuters who finally have accurate data on their drive times.
             </p>
             <Link to="/auth?mode=signup">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="text-lg px-10 py-6 rounded-2xl bg-background text-accent hover:bg-background/90 hover:scale-105 transition-all duration-300"
               >
                 Hell yeah, track my commute 🚗
