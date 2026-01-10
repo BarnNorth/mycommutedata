@@ -44,7 +44,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold mb-3">4. Free Trial and Subscription</h2>
             <p className="text-muted-foreground">
-              We offer a 24-hour free trial with full access to all features. After the trial period, continued access requires a monthly subscription of $14.99/month. All payments are processed securely through Stripe. You may cancel your subscription at any time, and your access will continue until the end of your current billing period.
+              We offer a 24-hour free trial with full access to all features. After the trial period, continued access requires a monthly subscription of $9.99/month. All payments are processed securely through Stripe. You may cancel your subscription at any time, and your access will continue until the end of your current billing period.
             </p>
           </section>
 
