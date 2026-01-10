@@ -127,12 +127,9 @@ export default function Landing() {
       {/* Problem Section - Skewed */}
       <section className="py-24 gradient-orange skew-section">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primary-foreground">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-primary-foreground">
             Why do you need this?
           </h2>
-          <p className="text-center text-primary-foreground/80 mb-16 text-lg">
-            (or at least, not telling the full truth)
-          </p>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <ProblemCard
               emoji="🏠"
