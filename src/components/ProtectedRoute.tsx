@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywall } from '@/contexts/PaywallContext';
 import Paywall from '@/components/Paywall';
 
 interface ProtectedRouteProps {
@@ -11,6 +12,7 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const { hasLifetimeAccess, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
+  const { paywallDismissed, showPaywall, dismissPaywall, closePaywall } = usePaywall();
 
   if (loading || subscriptionLoading) {
     return (
@@ -25,11 +27,18 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   // Show paywall if trial expired and no lifetime access
-  if (trialExpired && !hasLifetimeAccess) {
+  const shouldShowPaywall = trialExpired && !hasLifetimeAccess;
+  
+  // Show initial paywall (can be dismissed) or triggered paywall (from restricted actions)
+  if (shouldShowPaywall && (!paywallDismissed || showPaywall)) {
     return (
       <>
         {children}
-        <Paywall trialDaysRemaining={trialDaysRemaining} />
+        <Paywall 
+          trialDaysRemaining={trialDaysRemaining} 
+          onClose={showPaywall ? closePaywall : dismissPaywall}
+          canClose={true}
+        />
       </>
     );
   }

@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywall } from '@/contexts/PaywallContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LayoutDashboard, Settings, LogOut, Plus, Crown, Clock } from 'lucide-react';
@@ -14,9 +15,17 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { signOut, user } = useAuth();
   const { hasLifetimeAccess, trialStartedAt, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
+  const { triggerPaywall } = usePaywall();
   const location = useLocation();
   const navigate = useNavigate();
   const [timeRemaining, setTimeRemaining] = useState<string>('');
+
+  const handleAddRouteClick = (e: React.MouseEvent) => {
+    if (trialExpired && !hasLifetimeAccess) {
+      e.preventDefault();
+      triggerPaywall();
+    }
+  };
 
   // Update countdown timer every second
   useEffect(() => {
@@ -98,7 +107,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </Badge>
               ) : null
             )}
-            <Link to="/routes/new">
+            <Link to="/routes/new" onClick={handleAddRouteClick}>
               <Button size="sm" className="gap-2 gradient-orange border-0">
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Add Route</span>

@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywall } from '@/contexts/PaywallContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -11,10 +14,27 @@ import { logger } from '@/lib/logger';
 
 export default function AddRoute() {
   const { user } = useAuth();
+  const { hasLifetimeAccess, trialExpired, loading: subscriptionLoading } = useSubscription();
+  const { triggerPaywall } = usePaywall();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // If trial expired and no lifetime access, show paywall and redirect
+  useEffect(() => {
+    if (!subscriptionLoading && trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      navigate('/dashboard');
+    }
+  }, [subscriptionLoading, trialExpired, hasLifetimeAccess, triggerPaywall, navigate]);
+
   const handleSubmit = async (data: RouteFormData) => {
+    // Double-check access before submitting
+    if (trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      navigate('/dashboard');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('routes')
@@ -44,6 +64,11 @@ export default function AddRoute() {
       });
     }
   };
+
+  // Don't render the form if user shouldn't have access
+  if (!subscriptionLoading && trialExpired && !hasLifetimeAccess) {
+    return null;
+  }
 
   return (
     <DashboardLayout>
