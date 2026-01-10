@@ -36,10 +36,10 @@ export default function Landing() {
             {/* Left Side - Headlines */}
             <div className="animate-fade-in">
               <h1 className="text-hero mb-6">
-                Make your commute{" "}
+                Make your commute not{" "}
                 <span className="text-primary italic relative">
                   <span className="relative">
-                    not suck
+                    suck
                     <span className="absolute left-0 right-0 top-1/2 h-1 bg-accent -rotate-2" />
                   </span>
                 </span>
