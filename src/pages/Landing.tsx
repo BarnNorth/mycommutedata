@@ -198,8 +198,94 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Data Showcase Section */}
+      {/* Pricing Section */}
       <section className="py-24 bg-card/50">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Simple, Fair Pricing</h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">Start free, upgrade when you're ready</p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-4xl mx-auto">
+            {/* Free Tier Card */}
+            <div className="bg-card border-2 border-border rounded-2xl p-8 hover-lift w-full md:w-80">
+              <div className="text-center mb-6">
+                <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Free Forever</p>
+                <p className="text-5xl font-black mb-2">$0</p>
+                <p className="text-muted-foreground text-sm">No credit card required</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>1 route to track</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>Daily commute recordings</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>7-day history</span>
+                </li>
+                <li className="flex items-center gap-3 text-muted-foreground">
+                  <span>✗</span>
+                  <span>Unlimited routes</span>
+                </li>
+                <li className="flex items-center gap-3 text-muted-foreground">
+                  <span>✗</span>
+                  <span>Full history & insights</span>
+                </li>
+              </ul>
+              <Link to="/auth?mode=signup" className="block">
+                <Button variant="outline" className="w-full rounded-xl py-6">
+                  Get Started Free
+                </Button>
+              </Link>
+            </div>
+
+            {/* Lifetime Tier Card */}
+            <div className="bg-card border-2 border-primary rounded-2xl p-8 hover-lift w-full md:w-80 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                  BEST VALUE
+                </span>
+              </div>
+              <div className="text-center mb-6">
+                <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Lifetime Access</p>
+                <p className="text-5xl font-black text-primary mb-2">$9.99</p>
+                <p className="text-muted-foreground text-sm">One-time payment, forever yours</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span className="font-medium">Unlimited routes</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>Daily commute recordings</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span className="font-medium">Full history forever</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span className="font-medium">Advanced insights</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>All future updates</span>
+                </li>
+              </ul>
+              <Link to="/auth?mode=signup" className="block">
+                <Button className="w-full rounded-xl py-6 gradient-orange border-0">
+                  Get Lifetime Access
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Data Showcase Section */}
+      <section className="py-24">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">The kind of insights you'll get</h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">Real data from real commutes</p>
