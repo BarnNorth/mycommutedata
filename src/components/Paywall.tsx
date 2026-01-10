@@ -87,6 +87,9 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
                 <span>All future updates included</span>
               </li>
             </ul>
+            <p className="text-xs text-muted-foreground pt-1">
+              *Data collection is paused after 45 days of no activity.
+            </p>
           </div>
 
           <div className="text-center space-y-2 sm:space-y-4">
