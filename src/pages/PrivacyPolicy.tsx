@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold mb-3">4. Data Collection and Retention</h2>
             <p className="text-muted-foreground bg-accent/10 p-4 rounded-lg border border-accent/20">
-              <strong className="text-foreground">45-Day Inactivity Policy:</strong> We automatically pause data collection for all your routes if you have not logged into your account for 45 days. This helps us manage service costs while ensuring active users receive uninterrupted service. Simply logging back in will automatically resume data collection for all your active routes. All historical commute data is retained until you delete your account.
+              <strong className="text-foreground">Subscription-Based Collection:</strong> Data collection is active while you have an active subscription. If your subscription is cancelled or expires, data collection will stop but all your historical commute data is retained until you delete your account. Resubscribing will immediately resume data collection for all your active routes.
             </p>
           </section>
 

@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import Stripe from "https://esm.sh/stripe@18.5.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,8 +20,42 @@ interface Route {
 interface UserSettings {
   timezone: string | null;
   trial_started_at: string | null;
-  has_lifetime_access: boolean;
-  last_login_at: string | null;
+}
+
+// Cache for subscription status to avoid repeated Stripe API calls
+const subscriptionCache = new Map<string, { subscribed: boolean; checkedAt: number }>();
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+async function checkUserSubscription(stripe: Stripe, supabase: any, userId: string): Promise<boolean> {
+  // Check cache first
+  const cached = subscriptionCache.get(userId);
+  if (cached && Date.now() - cached.checkedAt < CACHE_TTL_MS) {
+    return cached.subscribed;
+  }
+
+  // Get user email from auth
+  const { data: authUser } = await supabase.auth.admin.getUserById(userId);
+  if (!authUser?.user?.email) {
+    console.log(`[check-commutes] User ${userId} - no email found`);
+    return false;
+  }
+
+  // Check Stripe for active subscription
+  const customers = await stripe.customers.list({ email: authUser.user.email, limit: 1 });
+  if (customers.data.length === 0) {
+    subscriptionCache.set(userId, { subscribed: false, checkedAt: Date.now() });
+    return false;
+  }
+
+  const subscriptions = await stripe.subscriptions.list({
+    customer: customers.data[0].id,
+    status: "active",
+    limit: 1,
+  });
+
+  const subscribed = subscriptions.data.length > 0;
+  subscriptionCache.set(userId, { subscribed, checkedAt: Date.now() });
+  return subscribed;
 }
 
 Deno.serve(async (req) => {
@@ -32,8 +67,14 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    let stripe: Stripe | null = null;
+    if (stripeKey) {
+      stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
+    }
 
     // Get current time info
     const now = new Date();
@@ -75,39 +116,32 @@ Deno.serve(async (req) => {
     const results: { routeId: string; success: boolean; message: string }[] = [];
 
     for (const route of routes as Route[]) {
-      // Get user's settings for timezone and subscription status
+      // Get user's settings for timezone
       const { data: settings } = await supabase
         .from("user_settings")
-        .select("timezone, trial_started_at, has_lifetime_access, last_login_at")
+        .select("timezone, trial_started_at")
         .eq("user_id", route.user_id)
         .maybeSingle();
 
       const timezone = settings?.timezone || "America/Los_Angeles";
 
-      // Check subscription status - skip if trial expired and not paid
-      if (settings) {
-        const hasLifetimeAccess = settings.has_lifetime_access || false;
-        const trialStartedAt = settings.trial_started_at ? new Date(settings.trial_started_at) : null;
+      // Check subscription status - skip if trial expired and not subscribed
+      if (stripe) {
+        const trialStartedAt = settings?.trial_started_at ? new Date(settings.trial_started_at) : null;
         
-        if (!hasLifetimeAccess && trialStartedAt) {
+        if (trialStartedAt) {
           const trialEndDate = new Date(trialStartedAt);
           trialEndDate.setDate(trialEndDate.getDate() + 1); // 1 day trial
           
           if (now > trialEndDate) {
-            console.log(`[check-commutes] Route ${route.id} - skipping, user trial expired and not paid`);
-            results.push({ routeId: route.id, success: false, message: "Trial expired" });
-            continue;
-          }
-        }
-        
-        // Check 45-day inactivity - pause data collection if user hasn't logged in for 45 days
-        const lastLoginAt = settings.last_login_at ? new Date(settings.last_login_at) : null;
-        if (lastLoginAt) {
-          const daysSinceLogin = Math.floor((now.getTime() - lastLoginAt.getTime()) / (1000 * 60 * 60 * 24));
-          if (daysSinceLogin >= 45) {
-            console.log(`[check-commutes] Route ${route.id} - skipping, user inactive for ${daysSinceLogin} days (last login: ${lastLoginAt.toISOString()})`);
-            results.push({ routeId: route.id, success: false, message: "User inactive 45+ days" });
-            continue;
+            // Trial expired, check for active subscription
+            const hasSubscription = await checkUserSubscription(stripe, supabase, route.user_id);
+            
+            if (!hasSubscription) {
+              console.log(`[check-commutes] Route ${route.id} - skipping, user trial expired and no active subscription`);
+              results.push({ routeId: route.id, success: false, message: "No active subscription" });
+              continue;
+            }
           }
         }
       }
