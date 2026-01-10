@@ -44,8 +44,7 @@ export default function Landing() {
                 </span>
               </h1>
               <p className="text-hero-sub text-muted-foreground mb-8 max-w-xl">
-                Other map apps give you vague ranges like "25-45 min." We track your actual commute times so you can
-                stop guessing and start planning.
+                Planning a move or new job? Other map apps give you vague ranges like "typically 22 min to 35 min" when looking at traffic for future dates. We allow you to track real traffic data over time so you know exactly what you're signing up for.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/auth?mode=signup">
