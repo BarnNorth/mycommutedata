@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Clock, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { z } from 'zod';
 
 const authSchema = z.object({
@@ -124,8 +124,8 @@ export default function Auth() {
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-card animate-fade-in">
           <CardHeader className="text-center">
-            <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center mx-auto mb-4">
-              <Clock className="w-6 h-6 text-primary-foreground" />
+            <div className="w-12 h-12 rounded-xl gradient-orange flex items-center justify-center mx-auto mb-4 text-2xl shadow-orange">
+              🚗
             </div>
             <CardTitle className="text-2xl">
               {isSignUp ? 'Create your account' : 'Welcome back'}
@@ -166,7 +166,7 @@ export default function Auth() {
                   <p className="text-sm text-destructive">{errors.password}</p>
                 )}
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full gradient-orange border-0" disabled={loading}>
                 {loading ? 'Please wait...' : isSignUp ? 'Create account' : 'Log in'}
               </Button>
             </form>

@@ -155,7 +155,7 @@ export default function Settings() {
         </Card>
 
         {/* Save Button */}
-        <Button onClick={handleSave} disabled={saving} className="w-full sm:w-auto">
+        <Button onClick={handleSave} disabled={saving} className="w-full sm:w-auto gradient-orange border-0">
           {saving ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
