@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Clock, LayoutDashboard, Settings, LogOut, Plus } from 'lucide-react';
+import { LayoutDashboard, Settings, LogOut, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {
@@ -27,14 +27,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card sticky top-0 z-50">
+      <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
-                <Clock className="w-4 h-4 text-primary-foreground" />
+              <div className="w-9 h-9 rounded-xl gradient-orange flex items-center justify-center text-lg shadow-orange">
+                🚗
               </div>
-              <span className="font-semibold text-lg hidden sm:block">MyCommuteData</span>
+              <span className="font-bold text-lg hidden sm:block">CommutesDontSuck</span>
             </Link>
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
@@ -53,7 +53,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/routes/new">
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-2 gradient-orange border-0">
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Add Route</span>
               </Button>

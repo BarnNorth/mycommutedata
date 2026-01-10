@@ -331,7 +331,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold">Your Routes</h1>
             <Link to="/routes/new">
-              <Button className="gap-2">
+              <Button className="gap-2 gradient-orange border-0">
                 <Plus className="w-4 h-4" />
                 Add Route
               </Button>
@@ -347,7 +347,7 @@ export default function Dashboard() {
                   Add your first route to start tracking commute times.
                 </p>
                 <Link to="/routes/new">
-                  <Button>Add Your First Route</Button>
+                  <Button className="gradient-orange border-0">Add Your First Route</Button>
                 </Link>
               </CardContent>
             </Card>
