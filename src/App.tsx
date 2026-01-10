@@ -12,7 +12,6 @@ import Dashboard from "./pages/Dashboard";
 import AddRoute from "./pages/AddRoute";
 import RouteHistory from "./pages/RouteHistory";
 import Settings from "./pages/Settings";
-import PaymentSuccess from "./pages/PaymentSuccess";
 import SubscriptionSuccess from "./pages/SubscriptionSuccess";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -37,7 +36,6 @@ const App = () => (
               <Route path="/routes/new" element={<ProtectedRoute><AddRoute /></ProtectedRoute>} />
               <Route path="/routes/:routeId" element={<ProtectedRoute><RouteHistory /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-              <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
               <Route path="/subscription-success" element={<ProtectedRoute><SubscriptionSuccess /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
