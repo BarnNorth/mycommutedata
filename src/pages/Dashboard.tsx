@@ -59,7 +59,7 @@ interface CommuteLog {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { hasLifetimeAccess, trialExpired } = useSubscription();
+  const { isSubscribed, trialExpired } = useSubscription();
   const { triggerPaywall } = usePaywall();
   const { toast } = useToast();
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -117,7 +117,7 @@ export default function Dashboard() {
   };
 
   const handleAddRouteClick = (e: React.MouseEvent) => {
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       e.preventDefault();
       triggerPaywall();
     }
@@ -125,7 +125,7 @@ export default function Dashboard() {
 
   const toggleRoute = async (routeId: string, isActive: boolean) => {
     // Check if user needs to pay
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       triggerPaywall();
       return;
     }
@@ -238,7 +238,7 @@ export default function Dashboard() {
 
   const handleDuplicateRoute = async (route: Route) => {
     // Check if user needs to pay
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       triggerPaywall();
       return;
     }
@@ -278,7 +278,7 @@ export default function Dashboard() {
 
   const openEditDialog = (route: Route) => {
     // Check if user needs to pay
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       triggerPaywall();
       return;
     }
@@ -288,7 +288,7 @@ export default function Dashboard() {
 
   const openDeleteDialog = (route: Route) => {
     // Check if user needs to pay
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       triggerPaywall();
       return;
     }

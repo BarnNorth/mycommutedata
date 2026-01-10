@@ -14,22 +14,22 @@ import { logger } from '@/lib/logger';
 
 export default function AddRoute() {
   const { user } = useAuth();
-  const { hasLifetimeAccess, trialExpired, loading: subscriptionLoading } = useSubscription();
+  const { isSubscribed, trialExpired, loading: subscriptionLoading } = useSubscription();
   const { triggerPaywall } = usePaywall();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // If trial expired and no lifetime access, show paywall and redirect
+  // If trial expired and no active subscription, show paywall and redirect
   useEffect(() => {
-    if (!subscriptionLoading && trialExpired && !hasLifetimeAccess) {
+    if (!subscriptionLoading && trialExpired && !isSubscribed) {
       triggerPaywall();
       navigate('/dashboard');
     }
-  }, [subscriptionLoading, trialExpired, hasLifetimeAccess, triggerPaywall, navigate]);
+  }, [subscriptionLoading, trialExpired, isSubscribed, triggerPaywall, navigate]);
 
   const handleSubmit = async (data: RouteFormData) => {
     // Double-check access before submitting
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       triggerPaywall();
       navigate('/dashboard');
       return;
@@ -66,7 +66,7 @@ export default function AddRoute() {
   };
 
   // Don't render the form if user shouldn't have access
-  if (!subscriptionLoading && trialExpired && !hasLifetimeAccess) {
+  if (!subscriptionLoading && trialExpired && !isSubscribed) {
     return null;
   }
 

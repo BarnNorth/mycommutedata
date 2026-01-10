@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
-  const { hasLifetimeAccess, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
+  const { isSubscribed, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
   const { paywallDismissed, showPaywall, dismissPaywall, closePaywall } = usePaywall();
 
   if (loading || subscriptionLoading) {
@@ -26,8 +26,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     return <Navigate to="/auth" replace />;
   }
 
-  // Show paywall if trial expired and no lifetime access
-  const shouldShowPaywall = trialExpired && !hasLifetimeAccess;
+  // Show paywall if trial expired and no active subscription
+  const shouldShowPaywall = trialExpired && !isSubscribed;
   
   // Show initial paywall (can be dismissed) or triggered paywall (from restricted actions)
   if (shouldShowPaywall && (!paywallDismissed || showPaywall)) {

@@ -58,7 +58,7 @@ export default function Landing() {
                 </Link>
               </div>
               <p className="text-sm text-muted-foreground mt-3">
-                Full access for 24 hours. Then just $9.99 for lifetime access.
+                Full access for 24 hours. Then just $14.99/month.
               </p>
             </div>
 
@@ -240,17 +240,17 @@ export default function Landing() {
               </Link>
             </div>
 
-            {/* Lifetime Tier Card */}
+            {/* Pro Subscription Card */}
             <div className="bg-card border-2 border-primary rounded-2xl p-8 hover-lift w-full md:w-80 relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                  ONE-TIME PAYMENT
+                  MOST POPULAR
                 </span>
               </div>
               <div className="text-center mb-6">
-                <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Lifetime Access</p>
-                <p className="text-5xl font-black text-primary mb-2">$9.99</p>
-                <p className="text-muted-foreground text-sm">Pay once, use forever</p>
+                <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Pro Subscription</p>
+                <p className="text-5xl font-black text-primary mb-2">$14.99<span className="text-lg text-muted-foreground">/mo</span></p>
+                <p className="text-muted-foreground text-sm">Cancel anytime</p>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3">
@@ -263,15 +263,15 @@ export default function Landing() {
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span className="font-medium">Forever access</span>
+                  <span className="font-medium">Full commute history</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span>All future updates included</span>
+                  <span>Cancel anytime</span>
                 </li>
               </ul>
               <p className="text-xs text-center text-muted-foreground mb-4">
-                No subscriptions. No recurring fees. Ever.
+                No long-term commitment required.
               </p>
               <Link to="/auth?mode=signup" className="block">
                 <Button className="w-full rounded-xl py-6 gradient-orange border-0">
@@ -321,7 +321,7 @@ export default function Landing() {
               Stop guessing. Start knowing.
             </h2>
             <p className="text-accent-foreground/80 mb-8 text-lg">
-              Try free for 24 hours. Then just $9.99 for lifetime access.
+              Try free for 24 hours. Then just $14.99/month.
             </p>
             <Link to="/auth?mode=signup">
               <Button

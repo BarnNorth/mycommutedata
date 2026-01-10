@@ -42,16 +42,16 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">4. Free Trial and Payment</h2>
+            <h2 className="text-xl font-semibold mb-3">4. Free Trial and Subscription</h2>
             <p className="text-muted-foreground">
-              We offer a 24-hour free trial with full access to all features. After the trial period, continued access requires a one-time payment of $9.99 for lifetime access. All payments are processed securely through Stripe. Payments are non-refundable except as required by law.
+              We offer a 24-hour free trial with full access to all features. After the trial period, continued access requires a monthly subscription of $14.99/month. All payments are processed securely through Stripe. You may cancel your subscription at any time, and your access will continue until the end of your current billing period.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">5. Data Collection Pause Policy</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Subscription Cancellation</h2>
             <p className="text-muted-foreground bg-accent/10 p-4 rounded-lg border border-accent/20">
-              <strong className="text-foreground">Important:</strong> To manage costs and ensure service sustainability, we automatically pause data collection for all routes if you have not logged into your account for 45 days. When data collection is paused, we will no longer collect traffic data for any of your routes until you log back in. Simply logging into your account will automatically resume data collection for all active routes. Your historical data is always preserved even when collection is paused.
+              <strong className="text-foreground">Important:</strong> When you cancel your subscription, data collection for all your routes will stop at the end of your current billing period. You will retain access to view your historical data, but no new commute data will be collected until you resubscribe. Resubscribing will immediately resume data collection for all active routes.
             </p>
           </section>
 

@@ -16,10 +16,10 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const handlePurchase = async () => {
+  const handleSubscribe = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment');
+      const { data, error } = await supabase.functions.invoke('create-checkout');
 
       if (error) throw error;
 
@@ -27,7 +27,7 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
         window.open(data.url, '_blank');
       }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Checkout error:', error);
       toast({
         title: 'Error',
         description: 'Failed to start checkout. Please try again.',
@@ -58,17 +58,17 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
           </div>
           <CardTitle className="text-xl sm:text-2xl">Your 24-Hour Trial Has Ended</CardTitle>
           <CardDescription className="text-sm sm:text-base mt-2">
-            Unlock lifetime access to CommutesDontSuck for just $9.99 — one payment, forever yours.
+            Subscribe to CommutesDontSuck Pro for just $14.99/month to continue tracking your commutes.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6 pb-4 sm:pb-6">
           {canClose && (
             <p className="text-xs sm:text-sm text-center text-muted-foreground bg-muted/50 rounded-lg p-2 sm:p-3">
-              You can still view your historical data, but adding or editing routes requires a paid account.
+              You can still view your historical data, but adding or editing routes requires an active subscription.
             </p>
           )}
           <div className="bg-muted rounded-lg p-3 sm:p-4 space-y-2 sm:space-y-3">
-            <h4 className="font-semibold text-sm sm:text-base">Lifetime Access includes:</h4>
+            <h4 className="font-semibold text-sm sm:text-base">Pro Subscription includes:</h4>
             <ul className="space-y-1.5 sm:space-y-2 text-sm sm:text-base">
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -84,28 +84,25 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                <span>All future updates included</span>
+                <span>Cancel anytime</span>
               </li>
             </ul>
-            <p className="text-xs text-muted-foreground pt-1">
-              *Data collection is paused after 45 days of no activity.
-            </p>
           </div>
 
           <div className="text-center space-y-2 sm:space-y-4">
             <div>
               <Badge variant="secondary" className="text-base sm:text-lg px-3 sm:px-4 py-0.5 sm:py-1">
-                One-time payment
+                Monthly subscription
               </Badge>
             </div>
-            <div className="text-3xl sm:text-4xl font-bold">$9.99</div>
+            <div className="text-3xl sm:text-4xl font-bold">$14.99<span className="text-lg text-muted-foreground">/month</span></div>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Pay once, use forever. No subscriptions.
+              Cancel anytime. No long-term commitment.
             </p>
           </div>
 
           <Button 
-            onClick={handlePurchase} 
+            onClick={handleSubscribe} 
             disabled={loading}
             className="w-full gradient-orange border-0 text-base sm:text-lg py-5 sm:py-6"
           >
@@ -115,12 +112,12 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
                 Opening checkout...
               </>
             ) : (
-              'Get Lifetime Access'
+              'Subscribe Now'
             )}
           </Button>
 
           <p className="text-xs text-center text-muted-foreground">
-            Secure payment powered by Stripe. 30-day money-back guarantee.
+            Secure payment powered by Stripe.
           </p>
         </CardContent>
       </Card>

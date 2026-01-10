@@ -15,14 +15,14 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { signOut, user } = useAuth();
-  const { hasLifetimeAccess, trialStartedAt, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
+  const { isSubscribed, subscriptionEnd, trialStartedAt, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
   const { triggerPaywall } = usePaywall();
   const location = useLocation();
   const navigate = useNavigate();
   const [timeRemaining, setTimeRemaining] = useState<string>('');
 
   const handleAddRouteClick = (e: React.MouseEvent) => {
-    if (trialExpired && !hasLifetimeAccess) {
+    if (trialExpired && !isSubscribed) {
       e.preventDefault();
       triggerPaywall();
     }
@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Update countdown timer every second
   useEffect(() => {
-    if (hasLifetimeAccess || !trialStartedAt || trialExpired) return;
+    if (isSubscribed || !trialStartedAt || trialExpired) return;
 
     const updateTimer = () => {
       const now = new Date();
@@ -54,7 +54,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  }, [hasLifetimeAccess, trialStartedAt, trialExpired]);
+  }, [isSubscribed, trialStartedAt, trialExpired]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -96,10 +96,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center gap-3">
             {/* Member Status */}
             {!subscriptionLoading && (
-              hasLifetimeAccess ? (
+              isSubscribed ? (
                 <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
                   <Crown className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Lifetime</span>
+                  <span className="hidden sm:inline">Pro</span>
                 </Badge>
               ) : trialStartedAt && !trialExpired ? (
                 <Badge variant="outline" className="gap-1.5 border-orange-500/30 text-orange-500">
