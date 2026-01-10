@@ -1,10 +1,10 @@
-# MyCommuteData
+# CommutesDontSuck
 
-Get **exact commute times** instead of vague ranges. MyCommuteData tracks your routes at specific times and days to give you real traffic data based on actual conditions.
+Get **exact commute times** instead of vague ranges. CommutesDontSuck tracks your routes at specific times and days to give you real traffic data based on actual conditions.
 
-## What is MyCommuteData?
+## What is CommutesDontSuck?
 
-Traditional map apps show you estimated ranges like "25-45 minutes" which aren't helpful for planning. MyCommuteData solves this by:
+Traditional map apps show you estimated ranges like "25-45 minutes" which aren't helpful for planning. CommutesDontSuck solves this by:
 
 1. **Recording real commute times** - The app checks your routes at the times you specify using Google Maps traffic data
 2. **Building historical data** - Over time, you'll see patterns for each day and time
@@ -18,31 +18,27 @@ Traditional map apps show you estimated ranges like "25-45 minutes" which aren't
 - **Historical Tracking** - View all recorded commute times in route history
 - **Data Patterns** - Analyze trends across different days and times
 
-## How to Use
+## How It Works
 
-1. **Sign Up** - Create an account to get started
-2. **Add Your Google Maps API Key** - Go to Settings and enter your API key
-3. **Create Routes** - Add routes with your origin, destination, and when to check
-4. **Enable Routes** - Toggle routes active to start collecting data
-5. **View Results** - Check your dashboard for recent results and route history for patterns
+1. **Sign Up** - Create an account and start your 24-hour free trial
+2. **Create Routes** - Add routes with your origin, destination, and when to check
+3. **Enable Routes** - Toggle routes active to start collecting data
+4. **View Results** - Check your dashboard for recent results and route history for patterns
+5. **Subscribe** - Continue with a Pro subscription ($14.99/month) after your trial
 
 ## Tech Stack
 
 - React + TypeScript + Vite
 - Tailwind CSS + shadcn/ui
 - Supabase (Database, Auth, Edge Functions)
+- Stripe (Payments)
 - Google Maps Directions API
 
-## Development
+## Support
 
-```sh
-# Install dependencies
-npm install
+For support, reach out on X: [@barn_north](https://x.com/barn_north)
 
-# Start development server
-npm run dev
-```
+## Links
 
-## Deployment
-
-Deploy via [Lovable](https://lovable.dev) - click Share → Publish.
+- [Terms of Service](/terms)
+- [Privacy Policy](/privacy)
