@@ -69,20 +69,26 @@ serve(async (req) => {
     let cancelAtPeriodEnd = false;
 
     if (hasActiveSub) {
-      const subscription = subscriptions.data[0];
+      // Retrieve full subscription to ensure we get all fields
+      const subscription = await stripe.subscriptions.retrieve(subscriptions.data[0].id);
       cancelAtPeriodEnd = subscription.cancel_at_period_end === true;
+      
+      // Get period end from subscription or from items if not available
+      const periodEnd = subscription.current_period_end || 
+        (subscription.items?.data?.[0] as any)?.current_period_end;
       
       logStep("Subscription data", { 
         subscriptionId: subscription.id, 
-        currentPeriodEnd: subscription.current_period_end,
+        currentPeriodEnd: periodEnd,
+        rawCurrentPeriodEnd: subscription.current_period_end,
         status: subscription.status,
         cancelAtPeriodEnd: cancelAtPeriodEnd
       });
       
       // Safely handle the subscription end date
-      if (subscription.current_period_end) {
+      if (periodEnd) {
         try {
-          subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+          subscriptionEnd = new Date(periodEnd * 1000).toISOString();
         } catch (e) {
           logStep("Error parsing date, using null", { error: String(e) });
           subscriptionEnd = null;
