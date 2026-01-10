@@ -91,7 +91,6 @@ export type Database = {
       user_settings: {
         Row: {
           created_at: string
-          google_maps_api_key: string | null
           has_lifetime_access: boolean
           id: string
           timezone: string | null
@@ -100,7 +99,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          google_maps_api_key?: string | null
           has_lifetime_access?: boolean
           id?: string
           timezone?: string | null
@@ -109,7 +107,6 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          google_maps_api_key?: string | null
           has_lifetime_access?: boolean
           id?: string
           timezone?: string | null

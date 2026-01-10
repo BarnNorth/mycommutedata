@@ -17,7 +17,6 @@ interface Route {
 }
 
 interface UserSettings {
-  google_maps_api_key: string | null;
   timezone: string | null;
   trial_started_at: string | null;
   has_lifetime_access: boolean;
