@@ -1,8 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscription';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Settings, LogOut, Plus } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { LayoutDashboard, Settings, LogOut, Plus, Crown, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {
@@ -11,8 +13,38 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { signOut, user } = useAuth();
+  const { hasLifetimeAccess, trialStartedAt, trialExpired, trialDaysRemaining, loading: subscriptionLoading } = useSubscription();
   const location = useLocation();
   const navigate = useNavigate();
+  const [timeRemaining, setTimeRemaining] = useState<string>('');
+
+  // Update countdown timer every second
+  useEffect(() => {
+    if (hasLifetimeAccess || !trialStartedAt || trialExpired) return;
+
+    const updateTimer = () => {
+      const now = new Date();
+      const trialEndDate = new Date(trialStartedAt);
+      trialEndDate.setDate(trialEndDate.getDate() + 1);
+      
+      const msRemaining = trialEndDate.getTime() - now.getTime();
+      
+      if (msRemaining <= 0) {
+        setTimeRemaining('Expired');
+        return;
+      }
+
+      const hours = Math.floor(msRemaining / (1000 * 60 * 60));
+      const minutes = Math.floor((msRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((msRemaining % (1000 * 60)) / 1000);
+
+      setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [hasLifetimeAccess, trialStartedAt, trialExpired]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -52,6 +84,20 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            {/* Member Status */}
+            {!subscriptionLoading && (
+              hasLifetimeAccess ? (
+                <Badge variant="secondary" className="gap-1.5 bg-primary/10 text-primary border-primary/20">
+                  <Crown className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Lifetime</span>
+                </Badge>
+              ) : trialStartedAt && !trialExpired ? (
+                <Badge variant="outline" className="gap-1.5 border-orange-500/30 text-orange-500">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Trial:</span> {timeRemaining}
+                </Badge>
+              ) : null
+            )}
             <Link to="/routes/new">
               <Button size="sm" className="gap-2 gradient-orange border-0">
                 <Plus className="w-4 h-4" />
