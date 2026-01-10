@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywall } from '@/contexts/PaywallContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -57,6 +59,8 @@ interface CommuteLog {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { hasLifetimeAccess, trialExpired } = useSubscription();
+  const { triggerPaywall } = usePaywall();
   const { toast } = useToast();
   const [routes, setRoutes] = useState<Route[]>([]);
   const [recentLogs, setRecentLogs] = useState<CommuteLog[]>([]);
@@ -112,7 +116,20 @@ export default function Dashboard() {
     }
   };
 
+  const handleAddRouteClick = (e: React.MouseEvent) => {
+    if (trialExpired && !hasLifetimeAccess) {
+      e.preventDefault();
+      triggerPaywall();
+    }
+  };
+
   const toggleRoute = async (routeId: string, isActive: boolean) => {
+    // Check if user needs to pay
+    if (trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      return;
+    }
+    
     try {
       const { error } = await supabase
         .from('routes')
@@ -220,6 +237,12 @@ export default function Dashboard() {
   };
 
   const handleDuplicateRoute = async (route: Route) => {
+    // Check if user needs to pay
+    if (trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      return;
+    }
+    
     try {
       const { data, error } = await supabase
         .from('routes')
@@ -254,11 +277,21 @@ export default function Dashboard() {
   };
 
   const openEditDialog = (route: Route) => {
+    // Check if user needs to pay
+    if (trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      return;
+    }
     setEditingRoute(route);
     setIsEditDialogOpen(true);
   };
 
   const openDeleteDialog = (route: Route) => {
+    // Check if user needs to pay
+    if (trialExpired && !hasLifetimeAccess) {
+      triggerPaywall();
+      return;
+    }
     setDeletingRoute(route);
     setIsDeleteDialogOpen(true);
   };
@@ -330,7 +363,7 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold">Your Routes</h1>
-            <Link to="/routes/new">
+            <Link to="/routes/new" onClick={handleAddRouteClick}>
               <Button className="gap-2 gradient-orange border-0">
                 <Plus className="w-4 h-4" />
                 Add Route
@@ -346,7 +379,7 @@ export default function Dashboard() {
                 <p className="text-muted-foreground mb-4">
                   Add your first route to start tracking commute times.
                 </p>
-                <Link to="/routes/new">
+                <Link to="/routes/new" onClick={handleAddRouteClick}>
                   <Button className="gradient-orange border-0">Add Your First Route</Button>
                 </Link>
               </CardContent>

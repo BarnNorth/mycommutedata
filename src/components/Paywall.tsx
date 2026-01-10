@@ -4,13 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Clock, CheckCircle, Loader2 } from 'lucide-react';
+import { Clock, CheckCircle, Loader2, X } from 'lucide-react';
 
 interface PaywallProps {
   trialDaysRemaining?: number;
+  onClose?: () => void;
+  canClose?: boolean;
 }
 
-export default function Paywall({ trialDaysRemaining = 0 }: PaywallProps) {
+export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = true }: PaywallProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +43,18 @@ export default function Paywall({ trialDaysRemaining = 0 }: PaywallProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="max-w-lg w-full shadow-2xl border-2">
+      <Card className="max-w-lg w-full shadow-2xl border-2 relative">
+        {canClose && onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-3 right-3 h-8 w-8 rounded-full"
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
+        )}
         <CardHeader className="text-center pb-2">
           <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Clock className="w-8 h-8 text-primary" />
@@ -52,6 +65,11 @@ export default function Paywall({ trialDaysRemaining = 0 }: PaywallProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {canClose && (
+            <p className="text-sm text-center text-muted-foreground bg-muted/50 rounded-lg p-3">
+              You can still view your historical data, but adding or editing routes requires a paid account.
+            </p>
+          )}
           <div className="bg-muted rounded-lg p-4 space-y-3">
             <h4 className="font-semibold">Lifetime Access includes:</h4>
             <ul className="space-y-2">
