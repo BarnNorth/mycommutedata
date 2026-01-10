@@ -51,7 +51,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold mb-3">5. Data Collection Pause Policy</h2>
             <p className="text-muted-foreground bg-accent/10 p-4 rounded-lg border border-accent/20">
-              <strong className="text-foreground">Important:</strong> To manage costs and ensure service sustainability, we automatically pause data collection for each route after 30 days of continuous tracking. When a route is paused, we will no longer collect traffic data for that route until you manually reactivate it. You can reactivate any paused route at any time from your dashboard to resume data collection for another 30-day period. Your historical data is preserved even when a route is paused.
+              <strong className="text-foreground">Important:</strong> To manage costs and ensure service sustainability, we automatically pause data collection for all routes if you have not logged into your account for 45 days. When data collection is paused, we will no longer collect traffic data for any of your routes until you log back in. Simply logging into your account will automatically resume data collection for all active routes. Your historical data is always preserved even when collection is paused.
             </p>
           </section>
 
