@@ -18,6 +18,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Function to update last_login_at
+  const updateLastLogin = async (userId: string) => {
+    try {
+      await supabase
+        .from('user_settings')
+        .update({ last_login_at: new Date().toISOString() })
+        .eq('user_id', userId);
+    } catch (error) {
+      console.error('Error updating last login:', error);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -25,6 +37,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Update last_login_at on sign in
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Use setTimeout to avoid blocking auth state update
+          setTimeout(() => updateLastLogin(session.user.id), 0);
+        }
       }
     );
 
@@ -33,6 +51,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      // Update last_login_at when user returns to the app with existing session
+      if (session?.user) {
+        updateLastLogin(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();

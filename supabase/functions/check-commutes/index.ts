@@ -20,6 +20,7 @@ interface UserSettings {
   timezone: string | null;
   trial_started_at: string | null;
   has_lifetime_access: boolean;
+  last_login_at: string | null;
 }
 
 Deno.serve(async (req) => {
@@ -77,7 +78,7 @@ Deno.serve(async (req) => {
       // Get user's settings for timezone and subscription status
       const { data: settings } = await supabase
         .from("user_settings")
-        .select("timezone, trial_started_at, has_lifetime_access")
+        .select("timezone, trial_started_at, has_lifetime_access, last_login_at")
         .eq("user_id", route.user_id)
         .maybeSingle();
 
@@ -95,6 +96,17 @@ Deno.serve(async (req) => {
           if (now > trialEndDate) {
             console.log(`[check-commutes] Route ${route.id} - skipping, user trial expired and not paid`);
             results.push({ routeId: route.id, success: false, message: "Trial expired" });
+            continue;
+          }
+        }
+        
+        // Check 45-day inactivity - pause data collection if user hasn't logged in for 45 days
+        const lastLoginAt = settings.last_login_at ? new Date(settings.last_login_at) : null;
+        if (lastLoginAt) {
+          const daysSinceLogin = Math.floor((now.getTime() - lastLoginAt.getTime()) / (1000 * 60 * 60 * 24));
+          if (daysSinceLogin >= 45) {
+            console.log(`[check-commutes] Route ${route.id} - skipping, user inactive for ${daysSinceLogin} days (last login: ${lastLoginAt.toISOString()})`);
+            results.push({ routeId: route.id, success: false, message: "User inactive 45+ days" });
             continue;
           }
         }

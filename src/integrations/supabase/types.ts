@@ -93,6 +93,7 @@ export type Database = {
           created_at: string
           has_lifetime_access: boolean
           id: string
+          last_login_at: string | null
           timezone: string | null
           trial_started_at: string | null
           user_id: string
@@ -101,6 +102,7 @@ export type Database = {
           created_at?: string
           has_lifetime_access?: boolean
           id?: string
+          last_login_at?: string | null
           timezone?: string | null
           trial_started_at?: string | null
           user_id: string
@@ -109,6 +111,7 @@ export type Database = {
           created_at?: string
           has_lifetime_access?: boolean
           id?: string
+          last_login_at?: string | null
           timezone?: string | null
           trial_started_at?: string | null
           user_id?: string
