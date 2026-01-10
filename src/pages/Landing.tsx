@@ -336,10 +336,20 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="py-12 border-t border-border">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-muted-foreground">
-            © {new Date().getFullYear()} CommutesDontSuck · Made for people who are tired of "typically"
-          </p>
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-muted-foreground text-sm">
+              © {new Date().getFullYear()} CommutesDontSuck · Made for people who are tired of "typically"
+            </p>
+            <div className="flex items-center gap-6">
+              <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Privacy Policy
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
