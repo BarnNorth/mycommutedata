@@ -80,7 +80,7 @@ export default function Paywall({ trialDaysRemaining = 0 }: PaywallProps) {
                 One-time payment
               </Badge>
             </div>
-            <div className="text-4xl font-bold">$20</div>
+            <div className="text-4xl font-bold">$9.99</div>
             <p className="text-sm text-muted-foreground">
               Pay once, use forever. No subscriptions.
             </p>
