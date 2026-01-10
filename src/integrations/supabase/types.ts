@@ -92,22 +92,28 @@ export type Database = {
         Row: {
           created_at: string
           google_maps_api_key: string | null
+          has_lifetime_access: boolean
           id: string
           timezone: string | null
+          trial_started_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           google_maps_api_key?: string | null
+          has_lifetime_access?: boolean
           id?: string
           timezone?: string | null
+          trial_started_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           google_maps_api_key?: string | null
+          has_lifetime_access?: boolean
           id?: string
           timezone?: string | null
+          trial_started_at?: string | null
           user_id?: string
         }
         Relationships: []
