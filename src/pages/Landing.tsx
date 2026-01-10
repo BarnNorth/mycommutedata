@@ -339,7 +339,7 @@ export default function Landing() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} CommutesDontSuck · Made for people who are tired of "typically"
+              © {new Date().getFullYear()} CommutesDontSuck · Developed by BarnNorth Studios
             </p>
             <div className="flex items-center gap-6">
               <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
