@@ -21,16 +21,21 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [hasCheckedAuth, setHasCheckedAuth] = useState(false);
   
-  const { signUp, signIn, user } = useAuth();
+  const { signUp, signIn, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Only redirect after initial auth check is complete, not on every user change
   useEffect(() => {
-    if (user) {
-      navigate('/dashboard');
+    if (!authLoading && !hasCheckedAuth) {
+      setHasCheckedAuth(true);
+      if (user) {
+        navigate('/dashboard');
+      }
     }
-  }, [user, navigate]);
+  }, [user, authLoading, hasCheckedAuth, navigate]);
 
   useEffect(() => {
     setIsSignUp(searchParams.get('mode') === 'signup');
