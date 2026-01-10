@@ -11,15 +11,16 @@ interface SEOProps {
   structuredData?: object;
 }
 
-const DEFAULT_TITLE = 'CommutesDontSuck - Track Real Commute Times';
-const DEFAULT_DESCRIPTION = 'Stop guessing with vague time ranges. Track and record your actual commute times automatically. Better than Google Maps estimates for planning your life.';
+const DEFAULT_TITLE = 'Commute Calculator - Track Real Commute Times | CommutesDontSuck';
+const DEFAULT_DESCRIPTION = 'The best commute calculator for real traffic data. Stop guessing with vague time ranges. Track and record your actual commute times automatically.';
+const DEFAULT_KEYWORDS = 'commute calculator, commute time calculator, traffic calculator, commute tracker, commute time, traffic data, route planner, work commute, travel time calculator';
 const DEFAULT_OG_IMAGE = 'https://lovable.dev/opengraph-image-p98pqg.png';
 const SITE_URL = 'https://commutesdontsuck.com';
 
 export default function SEO({
   title,
   description = DEFAULT_DESCRIPTION,
-  keywords = 'commute tracker, commute time, traffic data, route planner, work commute, travel time, traffic patterns, commute optimization',
+  keywords = DEFAULT_KEYWORDS,
   canonical,
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
