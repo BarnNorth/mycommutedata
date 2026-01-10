@@ -24,7 +24,7 @@ Traditional map apps show you estimated ranges like "25-45 minutes" which aren't
 2. **Create Routes** - Add routes with your origin, destination, and when to check
 3. **Enable Routes** - Toggle routes active to start collecting data
 4. **View Results** - Check your dashboard for recent results and route history for patterns
-5. **Subscribe** - Continue with a Pro subscription ($14.99/month) after your trial
+5. **Subscribe** - Continue with a Pro subscription ($9.99/month) after your trial
 
 ## Tech Stack
 
