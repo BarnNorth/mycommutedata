@@ -43,7 +43,18 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
 
   return (
     <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="max-w-lg w-full shadow-2xl border-2 relative max-h-[90vh] overflow-y-auto">
+      <Card className="max-w-lg w-full shadow-2xl border-2 relative">
+        {canClose && onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-3 right-3 h-8 w-8 rounded-full"
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
+        )}
         <CardHeader className="text-center pb-2">
           <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Clock className="w-8 h-8 text-primary" />
@@ -111,17 +122,6 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
           <p className="text-xs text-center text-muted-foreground">
             Secure payment powered by Stripe. 30-day money-back guarantee.
           </p>
-
-          {canClose && onClose && (
-            <Button
-              variant="ghost"
-              className="w-full text-muted-foreground hover:text-foreground"
-              onClick={onClose}
-            >
-              <X className="h-4 w-4 mr-2" />
-              Maybe later — just view my data
-            </Button>
-          )}
         </CardContent>
       </Card>
     </div>
