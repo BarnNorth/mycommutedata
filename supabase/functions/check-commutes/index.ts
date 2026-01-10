@@ -19,6 +19,8 @@ interface Route {
 interface UserSettings {
   google_maps_api_key: string | null;
   timezone: string | null;
+  trial_started_at: string | null;
+  has_lifetime_access: boolean;
 }
 
 Deno.serve(async (req) => {
@@ -73,14 +75,31 @@ Deno.serve(async (req) => {
     const results: { routeId: string; success: boolean; message: string }[] = [];
 
     for (const route of routes as Route[]) {
-      // Get user's settings for timezone FIRST (needed for day check)
+      // Get user's settings for timezone and subscription status
       const { data: settings } = await supabase
         .from("user_settings")
-        .select("timezone")
+        .select("timezone, trial_started_at, has_lifetime_access")
         .eq("user_id", route.user_id)
         .maybeSingle();
 
       const timezone = settings?.timezone || "America/Los_Angeles";
+
+      // Check subscription status - skip if trial expired and not paid
+      if (settings) {
+        const hasLifetimeAccess = settings.has_lifetime_access || false;
+        const trialStartedAt = settings.trial_started_at ? new Date(settings.trial_started_at) : null;
+        
+        if (!hasLifetimeAccess && trialStartedAt) {
+          const trialEndDate = new Date(trialStartedAt);
+          trialEndDate.setDate(trialEndDate.getDate() + 1); // 1 day trial
+          
+          if (now > trialEndDate) {
+            console.log(`[check-commutes] Route ${route.id} - skipping, user trial expired and not paid`);
+            results.push({ routeId: route.id, success: false, message: "Trial expired" });
+            continue;
+          }
+        }
+      }
 
       if (!settings) {
         console.log(`[check-commutes] Route ${route.id} - no user settings, using default timezone`);
