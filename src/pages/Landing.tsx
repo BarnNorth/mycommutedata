@@ -57,7 +57,7 @@ export default function Landing() {
                 </Link>
               </div>
               <p className="text-sm text-muted-foreground mt-3">
-                Full access for 24 hours. Then just $14.99/month.
+                Full access for 24 hours. Then just $9.99/month.
               </p>
             </div>
 
@@ -248,7 +248,7 @@ export default function Landing() {
               </div>
               <div className="text-center mb-6">
                 <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Pro Subscription</p>
-                <p className="text-5xl font-black text-primary mb-2">$14.99<span className="text-lg text-muted-foreground">/mo</span></p>
+                <p className="text-5xl font-black text-primary mb-2">$9.99<span className="text-lg text-muted-foreground">/mo</span></p>
                 <p className="text-muted-foreground text-sm">Cancel anytime</p>
               </div>
               <ul className="space-y-3 mb-8">
@@ -320,7 +320,7 @@ export default function Landing() {
               Stop guessing. Start knowing.
             </h2>
             <p className="text-accent-foreground/80 mb-8 text-lg">
-              Try free for 24 hours. Then just $14.99/month.
+              Try free for 24 hours. Then just $9.99/month.
             </p>
             <Link to="/auth?mode=signup">
               <Button

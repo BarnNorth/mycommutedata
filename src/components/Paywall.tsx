@@ -58,7 +58,7 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
           </div>
           <CardTitle className="text-xl sm:text-2xl">Your 24-Hour Trial Has Ended</CardTitle>
           <CardDescription className="text-sm sm:text-base mt-2">
-            Subscribe to CommutesDontSuck Pro for just $14.99/month to continue tracking your commutes.
+            Subscribe to CommutesDontSuck Pro for just $9.99/month to continue tracking your commutes.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6 pb-4 sm:pb-6">
@@ -95,7 +95,7 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
                 Monthly subscription
               </Badge>
             </div>
-            <div className="text-3xl sm:text-4xl font-bold">$14.99<span className="text-lg text-muted-foreground">/month</span></div>
+            <div className="text-3xl sm:text-4xl font-bold">$9.99<span className="text-lg text-muted-foreground">/month</span></div>
             <p className="text-xs sm:text-sm text-muted-foreground">
               Cancel anytime. No long-term commitment.
             </p>
