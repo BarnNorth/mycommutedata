@@ -152,60 +152,49 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Features Section - Bento Grid */}
+      {/* Features Section - 3 Cards */}
       <section className="py-24">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How it works</h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">Set it up once, get insights forever</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-            {/* Large Card - 2x2 */}
-            <div className="md:col-span-2 md:row-span-2 bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
-              <div className="text-5xl mb-6">🎯</div>
-              <h3 className="text-2xl font-bold mb-3">Set Your Routes</h3>
-              <p className="text-muted-foreground text-lg">
-                Add your home, work, gym, daycare—wherever you drive. Pick the times you actually leave. We'll handle
-                the rest.
-              </p>
-            </div>
-
-            {/* Wide Card - 2x1 */}
-            <div className="md:col-span-2 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
-              <div className="text-4xl mb-4">🤖</div>
-              <h3 className="text-xl font-bold mb-2">We Check Automatically</h3>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Card 1 - Add Your Routes */}
+            <div className="bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3">Add Your Routes</h3>
               <p className="text-muted-foreground">
-                Every day at your scheduled times, we capture the exact traffic duration. No manual logging needed.
+                Enter your home and work addresses. Set the exact time you leave each day.
               </p>
             </div>
 
-            {/* 1x1 Cards */}
-            <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
-              <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-bold mb-2">See Patterns</h3>
-              <p className="text-muted-foreground text-sm">Discover which days and times are actually fastest.</p>
-            </div>
-
-            <div className="bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
-              <div className="text-4xl mb-4">😊</div>
-              <h3 className="text-xl font-bold mb-2">Visual Ratings</h3>
-              <p className="text-muted-foreground text-sm">
-                Emoji indicators so you know at a glance if traffic sucks.
-              </p>
-            </div>
-
-            {/* Wide Card - 2x1 */}
-            <div className="md:col-span-2 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
-              <div className="text-4xl mb-4">📅</div>
-              <h3 className="text-xl font-bold mb-2">Historical Data</h3>
+            {/* Card 2 - We Record Daily */}
+            <div className="bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3">We Record Daily</h3>
               <p className="text-muted-foreground">
-                Build up weeks and months of real data. Export to CSV anytime. Your data, your way.
+                Every day at your scheduled time, we capture the exact traffic duration—not a range.
               </p>
             </div>
 
-            {/* 1x1 Card */}
-            <div className="md:col-span-2 lg:col-span-1 bg-card border border-border rounded-2xl p-6 hover-lift hover:border-primary transition-colors">
-              <div className="text-4xl mb-4">🚦</div>
-              <h3 className="text-xl font-bold mb-2">Real Numbers</h3>
-              <p className="text-muted-foreground text-sm">No more "typically." Just facts.</p>
+            {/* Card 3 - See Real Patterns */}
+            <div className="bg-card border border-border rounded-2xl p-8 hover-lift hover:border-primary transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3">See Real Patterns</h3>
+              <p className="text-muted-foreground">
+                View your commute history to find the fastest days and times based on real data.
+              </p>
             </div>
           </div>
         </div>
