@@ -57,20 +57,26 @@ serve(async (req) => {
     const customerId = customers.data[0].id;
     logStep("Found Stripe customer", { customerId });
 
+    // Check for active subscriptions (includes those cancelled but still in billing period)
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       status: "active",
       limit: 1,
     });
-    const hasActiveSub = subscriptions.data.length > 0;
+    
+    let hasActiveSub = subscriptions.data.length > 0;
     let subscriptionEnd = null;
+    let cancelAtPeriodEnd = false;
 
     if (hasActiveSub) {
       const subscription = subscriptions.data[0];
+      cancelAtPeriodEnd = subscription.cancel_at_period_end === true;
+      
       logStep("Subscription data", { 
         subscriptionId: subscription.id, 
         currentPeriodEnd: subscription.current_period_end,
-        status: subscription.status 
+        status: subscription.status,
+        cancelAtPeriodEnd: cancelAtPeriodEnd
       });
       
       // Safely handle the subscription end date
@@ -82,7 +88,11 @@ serve(async (req) => {
           subscriptionEnd = null;
         }
       }
-      logStep("Active subscription found", { subscriptionId: subscription.id, endDate: subscriptionEnd });
+      logStep("Active subscription found", { 
+        subscriptionId: subscription.id, 
+        endDate: subscriptionEnd,
+        cancelAtPeriodEnd 
+      });
     } else {
       logStep("No active subscription found");
     }
@@ -90,6 +100,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       subscribed: hasActiveSub,
       subscription_end: subscriptionEnd,
+      cancel_at_period_end: cancelAtPeriodEnd,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

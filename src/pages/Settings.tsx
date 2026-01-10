@@ -30,7 +30,7 @@ const TIMEZONES = [
 export default function Settings() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { isSubscribed, subscriptionEnd } = useSubscription();
+  const { isSubscribed, subscriptionEnd, cancelAtPeriodEnd } = useSubscription();
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -174,14 +174,20 @@ export default function Settings() {
                 <div>
                   <p className="font-medium">CommutesDontSuck Pro</p>
                   <p className="text-sm text-muted-foreground">
-                    {subscriptionEnd 
-                      ? `Renews on ${subscriptionEnd.toLocaleDateString()}`
-                      : 'Active subscription'
+                    {cancelAtPeriodEnd && subscriptionEnd
+                      ? `Cancelled - Access until ${subscriptionEnd.toLocaleDateString()}`
+                      : subscriptionEnd 
+                        ? `Renews on ${subscriptionEnd.toLocaleDateString()}`
+                        : 'Active subscription'
                     }
                   </p>
                 </div>
-                <span className="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded">
-                  Active
+                <span className={`px-2 py-1 text-xs font-medium rounded ${
+                  cancelAtPeriodEnd 
+                    ? 'bg-amber-500/20 text-amber-400' 
+                    : 'bg-green-500/20 text-green-400'
+                }`}>
+                  {cancelAtPeriodEnd ? 'Cancelled' : 'Active'}
                 </span>
               </div>
               <Button 

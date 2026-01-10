@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 interface SubscriptionStatus {
   isSubscribed: boolean;
   subscriptionEnd: Date | null;
+  cancelAtPeriodEnd: boolean;
   trialStartedAt: Date | null;
   trialExpired: boolean;
   trialDaysRemaining: number;
@@ -17,6 +18,7 @@ export function useSubscription(): SubscriptionStatus {
   const [status, setStatus] = useState<SubscriptionStatus>({
     isSubscribed: false,
     subscriptionEnd: null,
+    cancelAtPeriodEnd: false,
     trialStartedAt: null,
     trialExpired: false,
     trialDaysRemaining: 1,
@@ -41,6 +43,7 @@ export function useSubscription(): SubscriptionStatus {
           ...prev,
           isSubscribed: true,
           subscriptionEnd: stripeData.subscription_end ? new Date(stripeData.subscription_end) : null,
+          cancelAtPeriodEnd: stripeData.cancel_at_period_end === true,
           trialExpired: false,
           trialDaysRemaining: 0,
           loading: false,
