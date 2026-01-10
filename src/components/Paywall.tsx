@@ -19,7 +19,21 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
   const handleSubscribe = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout');
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError) throw sessionError;
+      if (!session?.access_token) {
+        throw new Error('No active session. Please sign in again and retry.');
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
 
       if (error) throw error;
 
@@ -30,7 +44,8 @@ export default function Paywall({ trialDaysRemaining = 0, onClose, canClose = tr
       console.error('Checkout error:', error);
       toast({
         title: 'Error',
-        description: 'Failed to start checkout. Please try again.',
+        description:
+          error instanceof Error ? error.message : 'Failed to start checkout. Please try again.',
         variant: 'destructive',
       });
     } finally {
