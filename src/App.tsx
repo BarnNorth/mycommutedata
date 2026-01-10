@@ -12,6 +12,8 @@ import AddRoute from "./pages/AddRoute";
 import RouteHistory from "./pages/RouteHistory";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/routes/new" element={<ProtectedRoute><AddRoute /></ProtectedRoute>} />
             <Route path="/routes/:routeId" element={<ProtectedRoute><RouteHistory /></ProtectedRoute>} />
