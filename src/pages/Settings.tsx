@@ -175,9 +175,9 @@ export default function Settings() {
                   <p className="font-medium">CommutesDontSuck Pro</p>
                   <p className="text-sm text-muted-foreground">
                     {cancelAtPeriodEnd && subscriptionEnd
-                      ? `Cancelled - Access until ${subscriptionEnd.toLocaleDateString()}`
+                      ? `Cancelled - Access until ${subscriptionEnd.toLocaleDateString('en-US', { timeZone: 'UTC' })}`
                       : subscriptionEnd 
-                        ? `Renews on ${subscriptionEnd.toLocaleDateString()}`
+                        ? `Renews on ${subscriptionEnd.toLocaleDateString('en-US', { timeZone: 'UTC' })}`
                         : 'Active subscription'
                     }
                   </p>
