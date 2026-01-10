@@ -1,9 +1,21 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import SEO, { generateBreadcrumbSchema } from "@/components/SEO";
 
 export default function TermsOfService() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Terms of Service', url: '/terms' },
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Terms of Service"
+        description="Read the Terms of Service for CommutesDontSuck. Learn about our free trial, subscription pricing, acceptable use, and your rights as a user."
+        canonical="/terms"
+        structuredData={breadcrumbSchema}
+      />
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 h-16 flex items-center">

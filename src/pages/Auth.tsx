@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft } from 'lucide-react';
 import { z } from 'zod';
+import SEO from '@/components/SEO';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -115,6 +116,15 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title={isSignUp ? "Sign Up" : "Log In"}
+        description={isSignUp 
+          ? "Create your CommutesDontSuck account and start tracking real commute times today. 24-hour free trial, no credit card required."
+          : "Log in to your CommutesDontSuck account to view your commute history and track your routes."
+        }
+        canonical={isSignUp ? "/auth?mode=signup" : "/auth"}
+        noIndex
+      />
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 h-16 flex items-center">

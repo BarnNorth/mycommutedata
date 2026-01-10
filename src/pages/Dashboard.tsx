@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import RouteForm, { RouteFormData } from '@/components/routes/RouteForm';
 import DraggableRouteCard from '@/components/routes/DraggableRouteCard';
 import { logger } from '@/lib/logger';
+import SEO from '@/components/SEO';
 import {
   DndContext,
   closestCenter,
@@ -358,6 +359,11 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
+      <SEO
+        title="Dashboard"
+        description="View and manage your commute routes, track real-time traffic data, and analyze your commute patterns."
+        noIndex
+      />
       <div className="space-y-6">
         {/* Routes Section */}
         <div>

@@ -1,9 +1,21 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import SEO, { generateBreadcrumbSchema } from "@/components/SEO";
 
 export default function PrivacyPolicy() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Privacy Policy', url: '/privacy' },
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Privacy Policy"
+        description="Read the Privacy Policy for CommutesDontSuck. Learn how we collect, use, and protect your personal information and commute data."
+        canonical="/privacy"
+        structuredData={breadcrumbSchema}
+      />
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 h-16 flex items-center">

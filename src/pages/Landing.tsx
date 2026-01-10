@@ -1,11 +1,32 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
+import SEO, { generateOrganizationSchema, generateWebsiteSchema, generateSoftwareApplicationSchema, generateFAQSchema } from "@/components/SEO";
+
+const landingFAQs = [
+  { question: "How does CommutesDontSuck track commute times?", answer: "We automatically record real traffic data at your scheduled departure times every day, giving you exact commute durations instead of vague ranges." },
+  { question: "Is there a free trial?", answer: "Yes! You get a full 24-hour free trial with access to all features. No credit card required." },
+  { question: "How much does it cost after the trial?", answer: "After your free trial, CommutesDontSuck is just $9.99/month. Cancel anytime." },
+  { question: "Can I track multiple routes?", answer: "Absolutely! You can add unlimited routes to track commutes to different locations or at different times." },
+];
 
 export default function Landing() {
-  return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      generateOrganizationSchema(),
+      generateWebsiteSchema(),
+      generateSoftwareApplicationSchema(),
+      generateFAQSchema(landingFAQs),
+    ],
+  };
 
+  return (
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <SEO
+        canonical="/"
+        structuredData={structuredData}
+      />
       {/* Floating Logo - Top Left */}
       <Link to="/" className="fixed top-6 left-6 z-50 flex items-center gap-2 animate-float">
         <div className="w-10 h-10 rounded-xl gradient-orange flex items-center justify-center text-xl shadow-orange">
@@ -335,7 +356,7 @@ export default function Landing() {
       </section>
 
       <Footer />
-    </div>
+    </main>
   );
 }
 
