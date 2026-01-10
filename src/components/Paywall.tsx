@@ -46,9 +46,9 @@ export default function Paywall({ trialDaysRemaining = 0 }: PaywallProps) {
           <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Clock className="w-8 h-8 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Your Free Trial Has Ended</CardTitle>
+          <CardTitle className="text-2xl">Your 24-Hour Trial Has Ended</CardTitle>
           <CardDescription className="text-base mt-2">
-            Unlock lifetime access to CommutesDontSuck and never worry about tracking your commutes again.
+            Unlock lifetime access to CommutesDontSuck for just $9.99 — one payment, forever yours.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

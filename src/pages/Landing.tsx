@@ -52,10 +52,13 @@ export default function Landing() {
                     size="lg"
                     className="w-full sm:w-auto text-lg px-8 py-6 rounded-2xl gradient-orange border-0 shadow-orange hover:scale-105 transition-transform duration-300"
                   >
-                    Track My Commute (It's Free) 🚗
+                    Start Free 24-Hour Trial 🚗
                   </Button>
                 </Link>
               </div>
+              <p className="text-sm text-muted-foreground mt-3">
+                Full access for 24 hours. Then just $9.99 for lifetime access.
+              </p>
             </div>
 
             {/* Right Side - Comparison Cards */}
@@ -202,40 +205,39 @@ export default function Landing() {
       <section className="py-24 bg-card/50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Simple, Fair Pricing</h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">Start free, upgrade when you're ready</p>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-4xl mx-auto">
-            {/* Free Tier Card */}
-            <div className="bg-card border-2 border-border rounded-2xl p-8 hover-lift w-full md:w-80">
+          <p className="text-center text-muted-foreground mb-16 text-lg">Try everything free for 24 hours, then decide</p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-3xl mx-auto">
+            {/* Trial Card */}
+            <div className="bg-card border-2 border-accent rounded-2xl p-8 hover-lift w-full md:w-80">
               <div className="text-center mb-6">
-                <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Free Forever</p>
+                <p className="text-sm text-accent uppercase tracking-wide font-medium mb-2">24-Hour Free Trial</p>
                 <p className="text-5xl font-black mb-2">$0</p>
                 <p className="text-muted-foreground text-sm">No credit card required</p>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span>1 route to track</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-success">✓</span>
-                  <span>Daily commute recordings</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-success">✓</span>
-                  <span>7-day history</span>
-                </li>
-                <li className="flex items-center gap-3 text-muted-foreground">
-                  <span>✗</span>
                   <span>Unlimited routes</span>
                 </li>
-                <li className="flex items-center gap-3 text-muted-foreground">
-                  <span>✗</span>
-                  <span>Full history & insights</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>Real-time traffic tracking</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>Full feature access</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-success">✓</span>
+                  <span>Complete commute history</span>
                 </li>
               </ul>
+              <p className="text-xs text-center text-muted-foreground mb-4">
+                Trial starts when you create your first route
+              </p>
               <Link to="/auth?mode=signup" className="block">
-                <Button variant="outline" className="w-full rounded-xl py-6">
-                  Get Started Free
+                <Button variant="outline" className="w-full rounded-xl py-6 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                  Start Free Trial
                 </Button>
               </Link>
             </div>
@@ -244,13 +246,13 @@ export default function Landing() {
             <div className="bg-card border-2 border-primary rounded-2xl p-8 hover-lift w-full md:w-80 relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                  BEST VALUE
+                  ONE-TIME PAYMENT
                 </span>
               </div>
               <div className="text-center mb-6">
                 <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">Lifetime Access</p>
                 <p className="text-5xl font-black text-primary mb-2">$9.99</p>
-                <p className="text-muted-foreground text-sm">One-time payment, forever yours</p>
+                <p className="text-muted-foreground text-sm">Pay once, use forever</p>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3">
@@ -259,24 +261,23 @@ export default function Landing() {
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span>Daily commute recordings</span>
+                  <span>Real-time traffic tracking</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span className="font-medium">Full history forever</span>
+                  <span className="font-medium">Forever access</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-success">✓</span>
-                  <span className="font-medium">Advanced insights</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-success">✓</span>
-                  <span>All future updates</span>
+                  <span>All future updates included</span>
                 </li>
               </ul>
+              <p className="text-xs text-center text-muted-foreground mb-4">
+                No subscriptions. No recurring fees. Ever.
+              </p>
               <Link to="/auth?mode=signup" className="block">
                 <Button className="w-full rounded-xl py-6 gradient-orange border-0">
-                  Get Lifetime Access
+                  Start Free Trial
                 </Button>
               </Link>
             </div>
@@ -322,14 +323,14 @@ export default function Landing() {
               Stop guessing. Start knowing.
             </h2>
             <p className="text-accent-foreground/80 mb-8 text-lg">
-              Join commuters who finally have accurate data on their drive times.
+              Try free for 24 hours. Then just $9.99 for lifetime access.
             </p>
             <Link to="/auth?mode=signup">
               <Button
                 size="lg"
                 className="text-lg px-10 py-6 rounded-2xl bg-background text-accent hover:bg-background/90 hover:scale-105 transition-all duration-300"
               >
-                Hell yeah, track my commute 🚗
+                Start My Free Trial 🚗
               </Button>
             </Link>
           </div>
