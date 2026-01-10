@@ -8,6 +8,40 @@ const ALLOWED_ORIGINS = [
   'http://localhost:5173',
 ];
 
+// In-memory rate limiting store (resets when function cold starts)
+// Key: IP address, Value: { count: number, resetTime: number }
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+const RATE_LIMIT_MAX_REQUESTS = 100; // Max requests per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+
+const checkRateLimit = (ip: string): { allowed: boolean; remaining: number; resetIn: number } => {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  // Clean up expired entries periodically (simple cleanup on each request)
+  if (rateLimitStore.size > 1000) {
+    for (const [key, value] of rateLimitStore.entries()) {
+      if (now > value.resetTime) {
+        rateLimitStore.delete(key);
+      }
+    }
+  }
+  
+  if (!record || now > record.resetTime) {
+    // New window
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1, resetIn: RATE_LIMIT_WINDOW_MS };
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return { allowed: false, remaining: 0, resetIn: record.resetTime - now };
+  }
+  
+  record.count++;
+  return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - record.count, resetIn: record.resetTime - now };
+};
+
 const getCorsHeaders = (origin: string | null) => {
   // Check if origin is in allowed list
   const allowedOrigin = origin && ALLOWED_ORIGINS.some(allowed => 
@@ -27,6 +61,30 @@ serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Get client IP for rate limiting
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                   req.headers.get('x-real-ip') || 
+                   'unknown';
+  
+  // Check rate limit
+  const rateLimit = checkRateLimit(clientIp);
+  if (!rateLimit.allowed) {
+    console.log(`Rate limit exceeded for IP: ${clientIp}`);
+    return new Response(
+      JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+      { 
+        status: 429, 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': Math.ceil(rateLimit.resetIn / 1000).toString(),
+          'Retry-After': Math.ceil(rateLimit.resetIn / 1000).toString(),
+        } 
+      }
+    );
   }
 
   try {
