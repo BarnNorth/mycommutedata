@@ -101,7 +101,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   <Crown className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Pro</span>
                 </Badge>
-              ) : trialStartedAt && !trialExpired ? (
+              ) : trialExpired ? (
+                <Badge variant="outline" className="gap-1.5 border-destructive/30 text-destructive">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Trial Expired</span>
+                </Badge>
+              ) : trialStartedAt ? (
                 <Badge variant="outline" className="gap-1.5 border-orange-500/30 text-orange-500">
                   <Clock className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Trial:</span> {timeRemaining}
