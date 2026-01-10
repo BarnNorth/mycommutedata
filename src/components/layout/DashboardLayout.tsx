@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LayoutDashboard, Settings, LogOut, Plus, Crown, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Footer from './Footer';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -66,7 +67,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -142,9 +143,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6 md:py-8">
+      <main className="container mx-auto px-4 py-6 md:py-8 flex-1">
         {children}
       </main>
+
+      <Footer />
     </div>
   );
 }
