@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 export default function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Animated Road Lines Background */}
-      <div className="fixed inset-0 road-lines opacity-30 pointer-events-none" />
 
       {/* Floating Logo - Top Left */}
       <Link to="/" className="fixed top-6 left-6 z-50 flex items-center gap-2 animate-float">
